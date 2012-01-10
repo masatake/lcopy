@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 SVN_CF_VERSION="0.0.0"
-SVN_REPOSITORY="http://srpmix.svn.sourceforge.net/svnroot/srpmix/srpmix/trunk"
+SVN_REPOSITORY="http://srpmix.svn.sourceforge.net/svnroot/srpmix/srpmix"
 LCOPY_CF_VERSION="0.2.5"
 LCOPY_VCS="svn"
 LCOPY_PACKAGE="srpmix"

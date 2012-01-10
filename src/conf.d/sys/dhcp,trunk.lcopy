@@ -1,0 +1,11 @@
+# -*- shell-script -*-
+DEBWATCH_CF_VERSION="0.0.0"
+DEBWATCH_WATCH_SPEC=ftp://ftp.debian.org/debian/pool/main
+DEBWATCH_PACKAGE=isc-dhcp
+DEBWATCH_WATCH=''
+LCOPY_CF_VERSION="0.2.15"
+LCOPY_VCS="debwatch"
+LCOPY_PACKAGE="dhcp"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

@@ -1,0 +1,8 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anonymous:@cvs.alioth.debian.org:/cvsroot/xtrace"
+CVS_MODULE="xtrace"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="xtrace"
+LCOPY_BRANCH="trunk"

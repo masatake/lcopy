@@ -1,0 +1,8 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anoncvs:anoncvs@sourceware.org:/cvs/src"
+CVS_MODULE="binutils"
+LCOPY_CF_VERSION="0.2.1"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="binutils"
+LCOPY_BRANCH="trunk"

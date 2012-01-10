@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.0"
+GIT_REPOSITORY="git://libvirt.org/libvirt.git"
+LCOPY_CF_VERSION="0.2.3"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="libvirt"
+LCOPY_BRANCH="trunk"

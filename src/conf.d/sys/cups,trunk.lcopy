@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+SVN_CF_VERSION="0.0.0"
+SVN_REPOSITORY="http://svn.easysw.com/public/cups/trunk"
+LCOPY_CF_VERSION="0.2.18"
+LCOPY_VCS="svn"
+LCOPY_PACKAGE="cups"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

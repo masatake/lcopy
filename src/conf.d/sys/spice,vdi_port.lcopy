@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.0"
+GIT_REPOSITORY="git://git.freedesktop.org/git/spice/win32/vdi_port"
+LCOPY_CF_VERSION="0.2.6"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="spice"
+LCOPY_BRANCH="vdi_port"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

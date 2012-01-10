@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="https://apv.googlecode.com/hg/"
+LCOPY_CF_VERSION="0.2.17"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="apv"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

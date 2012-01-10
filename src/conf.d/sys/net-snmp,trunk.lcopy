@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+SVN_CF_VERSION="0.0.0"
+SVN_REPOSITORY="http://net-snmp.svn.sourceforge.net/svnroot/net-snmp/trunk/net-snmp"
+LCOPY_CF_VERSION="0.2.8"
+LCOPY_VCS="svn"
+LCOPY_PACKAGE="net-snmp"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

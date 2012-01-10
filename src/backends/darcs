@@ -1,0 +1,259 @@
+#!/bin/bash
+
+BACKEND=darcs
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local repo=$1
+
+    common_write_spec 
+    printf "DARCS_REPOSITORY=\"%s\"\n" "${repo}"
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken darcs command line: cannot find repository specification" 1>&2
+	return 1
+    fi
+
+    local http_spec="^http://.*$"
+    local https_spec="^https://.*$"
+    if  ! ( [[ "$repo" =~ $http_spec ]]  || \
+	    [[ "$repo" =~ $https_spec ]]); then
+	echo "broken darcs command line: unrecognizable repo specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	for s in "$http_spec" "$https_spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+    else
+	return 0
+    fi
+}
+
+#
+# HELP
+#
+function darcs_help_help
+{
+    common_help_help "$@"
+}
+
+function darcs_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function darcs_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function darcs_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} darcs 'get' URL
+    echo "	" "(acceptable scheme for URL: http://..., and https://...)"
+}
+
+function darcs_genconf
+{
+    local original=$@
+    local cmd
+    local repo
+
+
+    if [ $# != 2 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    cmd=$1
+    shift
+    if ! [ "$cmd" = "get" ] ; then
+	echo "unknown command for get: $cmd" 1>&2
+	return 1
+    fi
+    
+    repo=$1
+    shift
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+    write_spec "${repo}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function darcs_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function darcs_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${DARCS_REPOSITORY}" ]; then
+	echo "no DARCS_REPOSITORY in $input" 1>&2
+	return 1
+    fi
+
+    ( 
+	cd ${output_dir}
+
+	common_spawn darcs get "${DARCS_REPOSITORY}"
+    )
+
+    return $?
+}
+
+#
+# PRINT_CMDLINE
+#
+function darcs_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function darcs_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${DARCS_REPOSITORY}" ]; then
+	    echo "no DARCS_REPOSITORY in $input" 1>&2
+	    return 1
+	fi
+	echo darcs get "${DARCS_REPOSITORY}"
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function darcs_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function darcs_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/darcs-update-$$
+
+
+    cd "${update_dir}"
+
+    if common_spawn darcs pull --all --no-test | tee $log; then
+	if [ "$(wc -l < $log)" -gt 1 ] && \
+	   LANG=C grep  '^No remote changes to pull in!$' $log > /dev/null 2>&1; then
+	    rm -f $log
+	    return 0
+	else
+	    rm -f $log
+	    return 1
+	fi
+    else
+	rm -f $log
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function darcs_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function darcs_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/_darcs
+}
+
+#
+# REBIRTH
+#
+function darcs_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function darcs_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! darcs_dirp ${dir}; then
+	echo "Not darcs directory: ${dir} " 1>&2
+	return 1
+    fi
+
+
+    cd $dir
+    local darcs_repo=$(darcs show repo)
+    if [ $? != 0 ]; then
+	echo "failed in darcs config invocation (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local darcs_default_remote=$(echo $darcs_repo | grep 'Default Remote: ' | sed -e s's/Default Remote: //')
+    if [ -z "$darcs_default_remote" ]; then
+	echo "cannot find Default Remote field in output of darcs show repo (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local repo="${darcs_default_remote}"
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    write_spec "${repo}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?

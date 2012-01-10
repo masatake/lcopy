@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+RSYNC_CF_VERSION="0.0.0"
+RSYNC_REPOSITORY="www.ietf.org::internet-drafts"
+RSYNC_DELETE_P=""
+LCOPY_CF_VERSION="0.2.16"
+LCOPY_VCS="rsync"
+LCOPY_PACKAGE="ietf-draft"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

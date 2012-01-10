@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="git://git.savannah.nongnu.org/attr.git"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.3.1"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="attr"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

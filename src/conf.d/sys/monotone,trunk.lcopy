@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+MTN_CF_VERSION="0.0.0"
+MTN_DATABASE="mtn://code.monotone.ca/monotone"
+MTN_BRANCH="net.venge.monotone"
+LCOPY_CF_VERSION="0.2.15"
+LCOPY_VCS="mtn"
+LCOPY_PACKAGE="monotone"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

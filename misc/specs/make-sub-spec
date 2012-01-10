@@ -1,0 +1,37 @@
+#!/bin/sh
+input=$1
+category=$2
+dir=$3
+for x in $(
+make --quiet --makefile - <<EOF
+include $input
+all:
+	@echo \${confs}
+EOF
+); do
+#    echo XXX $x YYY 1>&2
+    n=$(echo $x | sed -n -e 's/\([^,]\+\),.*/\1/p')
+    b=$(echo $x | sed -n -e 's/[^,]\+,\(.\+\)\.lcopy/\1/p')
+    f=${dir}/"${n},${b}.lcopy"
+    
+    if [ "$b" = "trunk" ]; then
+	t="($b)"
+    elif [ "$b" = "release" ]; then
+	t="(the latest release)"
+    else
+	t="($b branch)"
+    fi
+
+    backend=$(source $f; echo ${LCOPY_VCS})
+    cat <<EOF
+%package conf-$category-$n--$b
+Summary: lcopy conf file for $n$t
+Group: Development/Tools
+Requires: lcopy-conf-$category
+Requires: lcopy-backend-$backend
+%description conf-$category-$n--$b
+lcopy conf file for $n$t
+%files conf-$category-$n--$b
+%{_sysconfdir}/lcopy/conf.d/$category/$n,$b.lcopy
+EOF
+done

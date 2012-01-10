@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anonymous:@sblim.cvs.sourceforge.net:/cvsroot/sblim"
+CVS_MODULE="cmpi-base"
+LCOPY_CF_VERSION="0.2.19"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="sblim-cmpi-base"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

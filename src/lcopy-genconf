@@ -1,0 +1,133 @@
+#!/bin/bash
+
+source liblcopy.sh ||  exit 1
+
+
+function print_usage
+{
+    echo "Usage: "
+    echo "$0 --help|-h"
+    echo "$0 [--output-dir=OUTPUT-DIR] [--no-update] [--generated-by=GENERATED-BY] PACKAGE,BRANCH VCS-COMMANDS..."
+    echo ""
+
+    echo "VCS-COMMANDS format:"
+    for v in $(lcopy_backends_list); do
+	echo "[ $v backend ] "
+	lcopy_backend_genconf_format $v
+	echo
+    done
+}
+
+function main
+{
+    local original=$@
+    local output_dir
+    local update=yes
+    local package_branch
+    local package
+    local branch
+    local vcs
+    local vcs_args
+    local status
+    local generated_by="manual"
+
+
+    while [ $# -gt 0 ]; do
+	case "$1" in
+	    --help|-h)
+		print_usage
+		exit 0
+		;;
+	    (--output-dir=*)
+                output_dir=${1/--output-dir=}
+		if ! [ -d "$output_dir" ]; then
+		    echo "no such directory: $output_dir" 1>&2
+		    print_usage 1>&2
+		    exit 1
+		fi
+                ;;
+	    (--no-update)
+	    	update=no
+		;;
+	    (--generated-by=*)
+	    	generated_by=${1/--generated-by=}
+	        ;;
+	    --*)
+		echo "unknown option: $1" 1>&2
+		print_usage 1>&2
+		exit 1
+		;;
+	    *)
+		package_branch=$1
+		shift
+		break
+		;;
+	esac
+	shift
+    done
+
+    if [ -z "$package_branch" ]; then
+	echo "given no package,branch: $original" 1>&2
+	print_usage 1>&2
+	exit 1
+    fi
+    
+    # TODO: `.' shoule be accepted. See mod_cluster.prelcopy.
+    if ! [[ "${package_branch}" =~ ^([-a-zA-Z0-9_]+)(,([-a-zA-Z0-9_]+))?$ ]]; then
+	echo "broken package,branch specification: ${package_branch}" 1>&2
+	print_usage 1>&2
+	exit 1
+    else
+	package=${BASH_REMATCH[1]}
+	branch=${BASH_REMATCH[3]}
+    fi
+    
+    if [ -z "${branch}" ]; then
+	branch=trunk
+    fi
+
+    if [ $# -eq 0 ]; then
+	echo "given no vcs command: $original" 1>&2
+	print_usage 1>&2
+	exit 1
+    fi
+
+    vcs=$1
+    shift
+    local vcs_found
+    for v in $(lcopy_backends_list); do
+	if [ "$vcs" = "$v" ] ;then
+	    vcs_found=yes
+	    break
+	fi
+    done
+    if [ -z "$vcs_found" ]; then
+	echo "unsupported vcs: $vcs" 1>&2
+	print_usage 1>&2
+	exit 1
+    fi
+
+    local output_file=/dev/stdout
+    if [ -n "$output_dir" ]; then
+	my_tmpdir=`mktemp -d`
+	trap "chmod -R u+w $my_tmpdir; /bin/rm -rf $my_tmpdir" 0    
+	output_file=$my_tmpdir/lcopy
+	#output_file=${output_dir}/"${package},${branch}".es
+    fi
+
+    echo '# -*- shell-script -*-' > ${output_file}
+    lcopy_backend_genconf $vcs "$@" >> ${output_file}
+    status=$?
+
+    if [ $status = 0 ]; then
+	lcopy_print_conf "$vcs" "$package" "$branch" "$update" "$generated_by" >> ${output_file}
+	if [ -n "$output_dir" ]; then
+	    mv ${output_file} ${output_dir}/"${package},${branch}.lcopy"
+	fi
+	return $?
+    else
+	return $status
+    fi
+}
+
+main "$@"

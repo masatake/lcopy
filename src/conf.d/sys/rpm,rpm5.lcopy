@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anonymous:@rpm5.org:/cvs"
+CVS_MODULE="rpm"
+LCOPY_CF_VERSION="0.2.6"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="rpm"
+LCOPY_BRANCH="rpm5"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

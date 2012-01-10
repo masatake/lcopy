@@ -1,0 +1,8 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:guest:guest@openlab.jp:/circus/cvsroot"
+CVS_MODULE="skk/main"
+LCOPY_CF_VERSION="0.2.0"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="ddskk"
+LCOPY_BRANCH="trunk"

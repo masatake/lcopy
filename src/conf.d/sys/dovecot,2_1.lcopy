@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="http://hg.dovecot.org/dovecot-2.1"
+LCOPY_CF_VERSION="0.2.17"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="dovecot"
+LCOPY_BRANCH="2_1"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

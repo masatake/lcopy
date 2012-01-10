@@ -1,0 +1,284 @@
+#!/bin/bash
+
+BACKEND=git
+VERSION="0.0.1"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local repo=$1
+    local branch=$2
+    
+    common_write_spec 
+    printf "GIT_REPOSITORY=\"%s\"\n" "${repo}"
+    printf "GIT_BRANCH=\"%s\"\n" "${branch}"
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken git command line: cannot find repository specification" 1>&2
+	return 1
+    fi
+
+    local http_spec="^http://.*$"
+    local https_spec="^https://.*$"
+    local git_spec="^git://.*$"
+    if  ! ( [[ "$repo" =~ $http_spec ]]  || \
+	    [[ "$repo" =~ $https_spec ]] || \
+	    [[ "$repo" =~ $git_spec ]] ); then
+	echo "broken git command line: unrecognizable repo specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	for s in "$http_spec" "$https_spec" "$git_spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+    else
+	return 0
+    fi
+}
+
+#
+# HELP
+#
+function git_help_help
+{
+    common_help_help "$@"
+}
+
+function git_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function git_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function git_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} git 'clone' "[--branch|-b GIT-BRANCH]" URL
+    echo "	" "(acceptable scheme for URL: http://..., https://..., and git://...)"
+}
+
+function git_genconf
+{
+    local original=$@
+    local cmd
+    local branch_flag
+    local branch
+    local repo
+
+
+    if [ $# != 2 ] && [ $# != 4 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    cmd=$1
+    shift
+    if ! [ "$cmd" = "clone" ] ; then
+	echo "unknown command for clone: $cmd" 1>&2
+	return 1
+    fi
+    
+    if [ "$1" = "-b" ] || [ "$1" = "--branch" ]; then
+	branch_flag=$1
+	shift
+
+	branch="$1"
+	shift
+	if [ -z "$branch" ]; then
+	    echo "GIT-BRANCH is not given though $branch_flag is given" 1>&2
+	    return 1
+	fi
+    fi
+
+    repo=$1
+    shift
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+    write_spec "${repo}" "${branch}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function git_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function git_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${GIT_REPOSITORY}" ]; then
+	echo "no GIT_REPOSITORY in $input" 1>&2
+	return 1
+    fi
+
+    ( 
+	cd ${output_dir}
+
+	if [ -z "${GIT_BRANCH}" ]; then
+	    common_spawn git clone "${GIT_REPOSITORY}"
+	else
+	    common_spawn git clone --branch "${GIT_BRANCH}" "${GIT_REPOSITORY}"
+	fi
+    )
+
+    return $?
+}
+#
+# PRINT_CMDLINE
+#
+function git_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function git_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${GIT_REPOSITORY}" ]; then
+	    echo "no GIT_REPOSITORY in $input" 1>&2
+	    return 1
+	fi
+
+	if [ -z "${GIT_BRANCH}" ]; then
+	    echo git clone "${GIT_REPOSITORY}"
+	else
+	    echo git clone --branch "${GIT_BRANCH}" "${GIT_REPOSITORY}"
+	fi
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function git_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function git_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/git-update-$$
+
+
+    cd "${update_dir}"
+
+    if common_spawn git pull | tee $log; then
+	if [ "$(wc -l < $log)" = 1 ]  && \
+	   LANG=C grep  'Already up-to-date.' $log > /dev/null 2>&1; then
+	    rm -f $log
+	    return 0
+	else
+	    rm -f $log
+	    return 1
+	fi
+    else
+    	rm -f $log
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function git_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function git_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/.git
+}
+
+#
+# REBIRTH
+#
+function git_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function git_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! git_dirp ${dir}; then
+	echo "Not git directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir
+    local git_url=$(git config --get remote.origin.url)
+    if [ $? != 0 ]; then
+	echo "failed in git config invocation (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local repo="${git_url}"
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    local branch=$(git branch | grep '\*' | sed -e 's/\* //')
+    if [ "$branch" = master ]; then
+	branch=
+    fi
+    write_spec "${repo}" "${branch}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?
+
+# git clone git://github.com/masatake/cc-mode.git; cd cc-mode; git branch cc-guess; git checkout cc-guess; git fetch git://github.com/masatake/cc-mode.git cc-guess

@@ -1,0 +1,176 @@
+Summary: Scripts to update local copies gettting from vcs repositories 
+Name: lcopy
+Version: @PACKAGE_VERSION@
+Release: @RPM_RELEASE@
+Source: lcopy-@PACKAGE_VERSION@.tar.bz2
+Requires: spawn
+Buildarch: noarch
+
+Buildroot: %{_tmppath}/%{name}-root
+License: GPLv3
+
+Group: Development/Tools
+
+%description
+Scripts to update local copies getting from vcs repositories 
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%makeinstall
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%{_bindir}/lcopy-genconf
+%{_bindir}/lcopy-checkout
+%{_bindir}/lcopy-update
+%{_bindir}/lcopy-rebirth
+%{_bindir}/lcopy-ping
+%{_bindir}/liblcopy.sh
+%{_bindir}/liblcopy_backends.sh
+%dir %{_libexecdir}/lcopy
+%dir %{_libexecdir}/lcopy/backends
+%dir %{_libexecdir}/lcopy/hook.d
+%dir %{_sysconfdir}/lcopy
+%dir %{_sysconfdir}/lcopy/conf.d
+
+# 
+# Backends
+# 
+%package backend-cvs
+Summary: lcopy cvs backend
+Group: Development/Tools
+Requires: lcopy
+Requires: cvs
+%description backend-cvs
+lcopy cvs backend
+%files backend-cvs
+%{_libexecdir}/lcopy/backends/cvs
+
+%package backend-bzr
+Summary: lcopy bzr backend
+Group: Development/Tools
+Requires: lcopy
+Requires: bzr
+%description backend-bzr
+lcopy bzr backend
+%files backend-bzr
+%{_libexecdir}/lcopy/backends/bzr
+
+%package backend-darcs
+Summary: lcopy darcs backend
+Group: Development/Tools
+Requires: lcopy
+Requires: darcs
+%description backend-darcs
+lcopy darcs backend
+%files backend-darcs
+%{_libexecdir}/lcopy/backends/darcs
+
+%package backend-debwatch
+Summary: lcopy debwatch backend
+Group: Development/Tools
+Requires: lcopy
+Requires: debwatch
+%description backend-debwatch
+lcopy debwatch backend
+%files backend-debwatch
+%{_libexecdir}/lcopy/backends/debwatch
+
+%package backend-git
+Summary: lcopy git backend
+Group: Development/Tools
+Requires: lcopy
+Requires: git
+%description backend-git
+lcopy git backend
+%files backend-git
+%{_libexecdir}/lcopy/backends/git
+
+%package backend-hg
+Summary: lcopy mercurial backend
+Group: Development/Tools
+Requires: lcopy
+Requires: mercurial
+%description backend-hg
+lcopy mercurial backend
+%files backend-hg
+%{_libexecdir}/lcopy/backends/hg
+
+%package backend-mtn
+Summary: lcopy monotone backend
+Group: Development/Tools
+Requires: lcopy
+Requires: monotone >= 0.48.1-1
+%description backend-mtn
+lcopy monotone backend
+%files backend-mtn
+%{_libexecdir}/lcopy/backends/mtn
+
+%package backend-rsync
+Summary: lcopy rsync backend
+Group: Development/Tools
+Requires: lcopy
+Requires: rsync
+%description backend-rsync
+lcopy rsync backend
+%files backend-rsync
+%{_libexecdir}/lcopy/backends/rsync
+
+%package backend-svn
+Summary: lcopy subversion backend
+Group: Development/Tools
+Requires: lcopy
+Requires: subversion
+%description backend-svn
+lcopy subversion backend
+%files backend-svn
+%{_libexecdir}/lcopy/backends/svn
+
+%package backend-wgetx
+Summary: lcopy wget backend
+Group: Development/Tools
+Requires: lcopy
+Requires: wget
+Requires: vanillax
+%description backend-wgetx
+lcopy wget backend
+%files backend-wgetx
+%{_libexecdir}/lcopy/backends/wgetx
+
+#
+# Confs
+#
+%package conf-sys
+Summary: lcopy conf files for generic software
+Group: Development/Tools
+Requires: lcopy
+%description conf-sys
+lcopy conf files for generic software.
+%files conf-sys
+%dir %{_sysconfdir}/lcopy/conf.d/sys
+
+%package conf-android
+Summary: lcopy conf files for Android related software
+Group: Development/Tools
+Requires: lcopy
+%description conf-android
+lcopy conf files for Android related software
+%files conf-android
+%dir %{_sysconfdir}/lcopy/conf.d/android
+
+@CONFPACKGES@
+
+%changelog
+
+* Mon Aug 27 2007 Masatake YAMATO <yamato@redhat.com> - 0.1.0-0
+- First RPM build.

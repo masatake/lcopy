@@ -1,0 +1,345 @@
+#!/bin/bash
+
+BACKEND=cvs
+VERSION="0.0.0"
+
+cvs_pserver_spec="^:pserver:[a-zA-Z0-9]+:[a-zA-Z0-9]*@[-a-zA-Z0-9./:]+$"
+cvs_extssh_spec="^:extssh:([a-zA-Z0-9]+@[-a-zA-Z0-9./]+):[-a-zA-Z0-9./]+$"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local repo=$1
+    local module=$2
+
+    common_write_spec 
+    printf "CVS_REPOSITORY=\"%s\"\n" "${repo}"
+    printf "CVS_MODULE=\"%s\"\n" "${module}"    
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken cvs command line: cannot find \"-d\" repository specification" 1>&2
+	return 1
+    fi
+
+
+    if  ! ( [[ "$repo" =~ $cvs_pserver_spec ]] || [[ "$repo" =~ $cvs_extssh_spec ]] ); then
+	echo "broken cvs command line: unrecognizable repo specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	echo "	$cvs_pserver_spec" 1>&2
+	echo "	$cvs_extssh_spec" 1>&2
+	return 1
+    else
+	return 0
+    fi
+}
+
+function module_check
+{
+    local module=$1
+
+    if [ -z "$module" ]; then
+	echo "NO MODULE given: $original" 1>&2
+	return 1
+    elif ! [[ "${module}" =~ ${module_spec} ]]; then
+	echo "unacceptable module name: ${module}" 1>&2
+	echo "expected module specification: " 1>&2
+	echo "	$module_spec" 1>&2
+	return 1
+    else
+	return 0
+    fi
+}
+
+#
+# HELP
+#
+function cvs_help_help
+{
+    common_help_help "$@"
+}
+
+function cvs_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function cvs_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function cvs_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} cvs -d:pserver:USER:PASSWD@HOST:PATH 'checkout|co' MODULE 
+    echo "	" ${prefix} cvs -d :pserver:USER:PASSWD@HOST:PATH 'checkout|co' MODULE 
+        # 
+    echo "	" ${prefix} cvs -d:extssh:USER@HOST:PATH 'checkout|co'  MODULE 
+    echo "	" ${prefix} cvs -d :extssh:USER@HOST:PATH 'checkout|co'  MODULE 
+    echo "	" '(do not use -P: -P is added automatically.)'
+}
+
+function cvs_genconf
+{
+    local original=$@
+    local repo
+    local module
+
+    # 
+    # -d REPO
+    # 
+    local drepo="$1"
+    shift
+    if [ -z "${drepo}" ]; then
+	echo "broken cvs command line: too few argument" 1>&2
+	cvs_help genconf 1>&2
+	return 1
+    elif [ "-d" = "$drepo" ]; then
+	repo=$1
+	shift 1
+    elif [[ "${drepo}" == -d* ]]; then
+	repo=${drepo/-d/}
+    fi
+
+    #
+    # REPO
+    # 
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    #
+    # COMMAND
+    #
+    local cmd=$1
+    shift
+    if [ -z "$cmd" ]; then
+	echo "no command for checkout found" 1>&2
+	return 1
+    fi
+
+    if ! ( [ "$cmd" = "co" ] || [ "$cmd" = "checkout" ] ); then
+	echo "unknown command for checkout: $cmd" 1>&2
+	return 1
+    fi
+    
+    if [ "$1" = "-P" ] ; then
+	shift 1
+    fi
+
+    #
+    # MODULE
+    #
+    module=$1
+    local module_spec="[-_+a-zA-Z0-9]+"
+    shift
+    if ! module_check "${module}"; then
+	return 1
+    fi
+
+
+
+    if [ "$1" = "-P" ] ; then
+	shift 1
+    fi
+
+    if [ $# -gt 0 ]; then
+	echo "too many argument: $@ IN $original" 1>&2
+	return 1
+    fi
+
+    write_spec "${repo}" "${module}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function cvs_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function cvs_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+     if [ -z "${CVS_REPOSITORY}" ]; then
+	 echo "no CVS_REPOSITORY in $input" 1>&2
+	 return 1
+     fi
+
+    if [ -z "${CVS_MODULE}" ]; then
+	echo "no CVS_MODULE in $input" 1>&2
+	return 1
+    fi
+    
+    ( 
+	cd ${output_dir}
+
+	#
+	# Don't run key checking to avoid blocking.
+	# 
+	if [[ "${CVS_REPOSITORY}" =~ $cvs_extssh_spec ]]; then
+	    ssh -o 'StrictHostKeyChecking no' "${BASH_REMATCH[1]}"
+	fi
+	common_spawn cvs -d"${CVS_REPOSITORY}" checkout -P "${CVS_MODULE}"
+    )
+
+    return $?
+}
+
+#
+# PRINT_CMDLINE
+#
+function cvs_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+function cvs_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${CVS_REPOSITORY}" ]; then
+	    echo "no CVS_REPOSITORY in $input" 1>&2
+	    return 1
+	fi
+
+	if [ -z "${CVS_MODULE}" ]; then
+	    echo "no CVS_MODULE in $input" 1>&2
+	    return 1
+	fi
+	echo cvs -d"${CVS_REPOSITORY}" checkout -P "${CVS_MODULE}"
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function cvs_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function cvs_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/cvs-update-$$
+
+
+    cd "${update_dir}"
+
+    if common_spawn cvs update -d -P | tee $log; then
+	if grep "^[MU]" $log > /dev/null 2>&1; then
+	    rm -f $log
+	    return 1
+	else
+	    rm -f $log
+	    return 0
+	fi
+    else
+	rm -f $log
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function cvs_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function cvs_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/CVS
+}
+
+#
+# REBIRTH
+#
+function cvs_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function cvs_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! cvs_dirp ${dir}; then
+	echo "Not cvs directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir/CVS
+
+    local repo
+    if test -f Root; then
+	repo=$(cat Root)
+    else
+	echo "Cannot find Root file in $(pwd)" 1>&2
+	return 1
+    fi
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    local module
+    if test -f Repository; then
+	module=$(cat Repository)
+    else
+	echo "Cannot find Repository file in $(pwd)" 1>&2	
+	return 1
+    fi
+    if ! module_check "${module}"; then
+	return 1
+    fi
+
+    write_spec "${repo}" "${module}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?

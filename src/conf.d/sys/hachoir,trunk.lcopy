@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="http://bitbucket.org/haypo/hachoir/"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="hachoir"
+LCOPY_BRANCH="trunk"

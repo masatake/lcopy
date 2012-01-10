@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anoncvs:@anoncvs.NetBSD.org:/cvsroot"
+CVS_MODULE="src/sys"
+LCOPY_CF_VERSION="0.2.6"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="netbsd-kernel"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

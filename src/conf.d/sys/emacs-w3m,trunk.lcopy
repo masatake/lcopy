@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+CVS_CF_VERSION="0.0.0"
+CVS_REPOSITORY=":pserver:anonymous:@cvs.namazu.org:/storage/cvsroot"
+CVS_MODULE="emacs-w3m"
+LCOPY_CF_VERSION="0.2.9"
+LCOPY_VCS="cvs"
+LCOPY_PACKAGE="emacs-w3m"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

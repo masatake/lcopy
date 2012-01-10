@@ -1,0 +1,283 @@
+#!/bin/bash
+
+BACKEND=mtn
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local database=$1
+    local branch=$2
+
+    common_write_spec 
+    printf "MTN_DATABASE=\"%s\"\n" "${database}"
+    printf "MTN_BRANCH=\"%s\"\n" "${branch}"
+}
+
+function database_check
+{
+    local database=$1
+
+    if [ -z "${database}" ]; then
+	echo "broken mtn command line: cannot find database specification" 1>&2
+	return 1
+    fi
+
+    local mtn_database_spec="^mtn://.*$"
+    if  ! ( [[ "$database" =~ $mtn_database_spec ]] ); then
+	echo "broken mtn command line: unrecognizable database specification: $database" 1>&2
+	echo "expected database specifications: " 1>&2
+	for s in "$mtn_database_spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+    else
+	return 0
+    fi
+}
+
+function branch_check
+{
+    return 0
+}
+
+#
+# HELP
+#
+function mtn_help_help
+{
+    common_help_help "$@"
+}
+
+function mtn_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function mtn_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function mtn_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} mtn 'clone' DATABASE BRANCH
+    echo "	" "(acceptable scheme for DATABASE: mtn://...)"
+}
+
+function mtn_genconf
+{
+    local original=$@
+    local cmd
+    local database
+    local branch
+
+    if [ $# != 3 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    cmd=$1
+    shift
+    if ! [ "$cmd" = "clone" ] ; then
+	echo "unknown command for clone: $cmd" 1>&2
+	return 1
+    fi
+    
+    database=$1
+    shift
+    if ! database_check "${database}"; then
+	return 1
+    fi
+    
+    branch=$1
+    shift
+    if ! branch_check "${branch}"; then
+	return 1
+    fi
+
+    write_spec "${database}" "${branch}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function mtn_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function mtn_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${MTN_DATABASE}" ]; then
+	echo "no MTN_DATABASE in $input" 1>&2
+	return 1
+    fi
+
+    if [ -z "${MTN_BRANCH}" ]; then
+	echo "no MTN_BRANCH in $input" 1>&2
+	return 1
+    fi
+
+    ( 
+	cd ${output_dir}
+
+	common_spawn mtn clone "${MTN_DATABASE}" "${MTN_BRANCH}"
+    )
+
+    return $?
+}
+#
+# PRINT_CMDLINE
+#
+function mtn_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function mtn_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${MTN_DATABASE}" ]; then
+	    echo "no MTN_DATABASE in $input" 1>&2
+	    return 1
+	fi
+	if [ -z "${MTN_BRANCH}" ]; then
+	    echo "no MTN_BRANCH in $input" 1>&2
+	    return 1
+	fi
+
+	echo mtn clone "${MTN_DATABASE}" "${MTN_BRANCH}"
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function mtn_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function mtn_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/mtn-update-$$
+
+
+    cd "${update_dir}"
+
+    if common_spawn mtn pull --update 2>&1 | tee $log; then
+	if grep 'your workspace has not been updated' $log > /dev/null 2>&1; then
+	    rm -f $log
+	    return 0
+	else
+	    rm -f $log
+	    return 1
+	fi
+    else
+	rm -f $log
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function mtn_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function mtn_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/_MTN
+}
+
+#
+# REBIRTH
+#
+function mtn_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function mtn_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! mtn_dirp ${dir}; then
+	echo "Not mtn directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir
+    local database=$(mtn list vars | \
+	grep 'database: default-server ' | \
+	sed -e 's/database: default-server //')
+    if [ $? != 0 ]; then
+	echo "failed to get mtn database (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+    if ! database_check "${database}"; then
+	return 1
+    fi
+
+    local branch=$(mtn list vars | \
+	grep 'database: default-include-pattern ' | \
+	sed -e 's/database: default-include-pattern //')
+    if [ $? != 0 ]; then
+	echo "failed to get mtn branch (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+    if ! branch_check "${branch}"; then
+	return 1
+    fi    
+
+    write_spec "${database}" "${branch}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?

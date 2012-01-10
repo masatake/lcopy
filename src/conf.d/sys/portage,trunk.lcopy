@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="git://git.overlays.gentoo.org/proj/portage.git"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.2.19"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="portage"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

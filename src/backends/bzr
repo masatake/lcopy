@@ -1,0 +1,266 @@
+#!/bin/bash
+
+BACKEND=bzr
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local repo=$1
+
+    common_write_spec 
+    printf "BZR_REPOSITORY=\"%s\"\n" "${repo}"
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken bzr command line: cannot find repository specification" 1>&2
+	return 1
+    fi
+
+    local http_spec="^http://.*$"
+    local https_spec="^https://.*$"
+    local lp_spec="^lp:.*$"
+
+    if  ( [[ "$repo" =~ $http_spec ]]  || \
+	  [[ "$repo" =~ $https_spec ]]); then
+	return 0
+    elif [[ "$repo" =~ $lp_spec ]]; then
+	return 0
+    else
+	echo "broken bzr command line: unrecognizable repo specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	for s in "$http_spec" "$https_spec" "$lp_spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+	return 1
+    fi
+}
+
+#
+# HELP
+#
+function bzr_help_help
+{
+    common_help_help "$@"
+}
+
+function bzr_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function bzr_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function bzr_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} bzr 'branch' URL
+    echo "	" "(acceptable scheme for URL: http://..., https://... and lp:...)"
+}
+
+function bzr_genconf
+{
+    local original=$@
+    local cmd
+    local repo
+
+
+    if [ $# != 2 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    cmd=$1
+    shift
+    if ! [ "$cmd" = "branch" ] ; then
+	echo "unknown command for branch: $cmd" 1>&2
+	return 1
+    fi
+    
+    repo=$1
+    shift
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+    write_spec "${repo}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function bzr_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function bzr_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${BZR_REPOSITORY}" ]; then
+	echo "no BZR_REPOSITORY in $input" 1>&2
+	return 1
+    fi
+
+    ( 
+	cd "${output_dir}"
+	
+	export BZR_LOG=/dev/null
+	common_spawn bzr branch "${BZR_REPOSITORY}"
+    )
+
+    return $?
+}
+
+#
+# PRINT_CMDLINE
+#
+function bzr_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function bzr_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${BZR_REPOSITORY}" ]; then
+	    echo "no BZR_REPOSITORY in $input" 1>&2
+	    return 1
+	fi
+	echo bzr branch "${BZR_REPOSITORY}"
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function bzr_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function bzr_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/bzr-update-$$
+
+
+    cd "${update_dir}"
+
+    export BZR_LOG=/dev/null
+    if common_spawn bzr pull | tee $log; then
+	if [ "$(wc -l < $log)" = 1 ] && \
+	   LANG=C grep  '^No revisions to pull.$' $log > /dev/null 2>&1; then
+	    rm -f $log
+	    return 0
+	else
+	    rm -f $log
+	    return 1
+	fi
+    else
+	rm -f $log
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function bzr_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function bzr_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/.bzr
+}
+
+#
+# REBIRTH
+#
+function bzr_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function bzr_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! bzr_dirp ${dir}; then
+	echo "Not bzr directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir
+    
+    local bzr_info=$(bzr info)
+    if [ $? != 0 ]; then
+	echo "failed in bzr config invocation (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local bzr_parent_branch=$(echo $bzr_info | grep '  parent branch: ' | sed -e s's/  parent branch: //')
+    if [ -z "$bzr_parent_branch" ]; then
+	echo "cannot find parent branch field in output of bzr info (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local repo="${bzr_parent_branch}"
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    write_spec "${repo}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?

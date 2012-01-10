@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+BZR_CF_VERSION="0.0.0"
+BZR_REPOSITORY="http://bzr.savannah.gnu.org/r/gnash/trunk"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="bzr"
+LCOPY_PACKAGE="gnash"
+LCOPY_BRANCH="trunk"

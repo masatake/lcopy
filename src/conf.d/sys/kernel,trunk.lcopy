@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.0"
+GIT_REPOSITORY="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="kernel"
+LCOPY_BRANCH="trunk"

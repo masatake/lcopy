@@ -1,0 +1,255 @@
+#!/bin/bash
+
+BACKEND=rsync
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local repo=$1
+    local delete_p=$2
+
+    common_write_spec 
+    printf "RSYNC_REPOSITORY=\"%s\"\n" "${repo}"
+    printf "RSYNC_DELETE_P=\"%s\"\n" "${delete_p}"
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken rsync command line: cannot find repository specification" 1>&2
+	return 1
+    fi
+
+    local spec="^.*::.*$"
+    if  ! ( [[ "$repo" =~ $spec ]]  ); then
+	echo "broken rsync command line: unrecognizable repo::module specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	for s in "$spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+    else
+	return 0
+    fi
+}
+
+#
+# HELP
+#
+function rsync_help_help
+{
+    common_help_help "$@"
+}
+
+function rsync_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function rsync_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function rsync_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} rsync -avz [--delete] REPO::MODULE
+}
+
+function rsync_genconf
+{
+    local original=$@
+    local option
+    local delete_p
+    local repo
+
+
+    if [ $# -lt 2 -o $# -gt 3 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    option=$1
+    shift
+    if ! [ "$option" = "-avz" ] ; then
+	echo "unknown option for rsync: $option" 1>&2
+	echo "-avz is expected here" 1>&2
+	return 1
+    fi
+    
+
+    delete_p=$1
+    if [ "$delete_p" = "--delete" ]; then
+	shift
+    else
+	delete_p=""
+    fi
+    
+    repo=$1
+    shift
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+    write_spec "${repo}" "${delete_p}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function rsync_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function rsync_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${RSYNC_REPOSITORY}" ]; then
+	echo "no RSYNC_REPOSITORY in $input" 1>&2
+	return 1
+    fi
+
+    ( 
+	cd ${output_dir}
+	write_spec "${RSYNC_REPOSITORY}" $RSYNC_DELETE_P > ./.rsync
+	mkdir "${RSYNC_REPOSITORY}"
+	cd "${RSYNC_REPOSITORY}"
+	
+	common_spawn rsync -avz $RSYNC_DELETE_P "${RSYNC_REPOSITORY}" .
+    )
+
+    return $?
+}
+
+#
+# PRINT_CMDLINE
+#
+function rsync_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function rsync_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${RSYNC_REPOSITORY}" ]; then
+	    echo "no RSYNC_REPOSITORY in $input" 1>&2
+	    return 1
+	fi
+	echo rsync -avz $RSYNC_DELETE_P "${RSYNC_REPOSITORY}" .
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function rsync_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function rsync_update
+{
+    local input=$1
+    local update_dir=$2
+    local log=/tmp/rsync-update-$$
+
+
+    cd "${update_dir}"
+
+# % lcopy-update .
+# sending incremental file list
+# 
+# sent 356991 bytes  received 12 bytes  714006.00 bytes/sec
+# total size is 147322327  speedup is 412.66
+
+    if common_spawn rsync -avz $RSYNC_DELETE_P "${RSYNC_REPOSITORY}" . | tee $log; then
+	# TODO
+	rm -f $log
+	return 1
+    else
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function rsync_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function rsync_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/.rsync
+}
+
+#
+# REBIRTH
+#
+function rsync_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function rsync_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! rsync_dirp ${dir}; then
+	echo "Not rsync directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir
+    source .rsync
+
+    write_spec "${RSYNC_REPOSITORY}" $RSYNC_DELETE_P
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?

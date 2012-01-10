@@ -1,0 +1,10 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="http://git.fedorahosted.org/git/initscripts.git"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.2.18"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="initscripts"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

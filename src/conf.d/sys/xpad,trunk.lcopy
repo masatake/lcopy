@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+BZR_CF_VERSION="0.0.0"
+BZR_REPOSITORY="lp:xpad"
+LCOPY_CF_VERSION="0.2.11"
+LCOPY_VCS="bzr"
+LCOPY_PACKAGE="xpad"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

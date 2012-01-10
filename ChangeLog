@@ -1,0 +1,378 @@
+2012-01-11  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-envelop: Removed.
+
+2012-01-07  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/hook.d: New directory.
+
+	* src/hook.d/50srpmix-plugin: New helper command.
+
+2012-01-07  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/liblcopy.sh.in (lcopy_run_hook): Renamed from
+	lcopy_srpmix_plugin. Added new argument ACTION.
+
+	* misc/specs/lcopy.spec.in (envelop): New package.
+
+	* src/backends/wgetx (ftp_spec): use vanillax.
+
+2012-01-07  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/wgetx (ftp_spec): Don't expect tar archive.
+
+2012-01-05  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in: make sub packages for
+	each backends.
+
+	* misc/specs/make-sub-spec: Specify backend as requirement.
+
+2012-01-05  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/update.sh (lcopies): update confs.mk
+	instead of Makefile.am directly.
+
+	* src/conf.d/android/confs.mk: New file.
+
+	* src/conf.d/android/Makefile.am (confddir): Include confs.mk
+
+	* src/conf.d/sys/confs.mk: New file.
+
+	* src/conf.d/sys/Makefile.am (confddir): Include confs.mk
+
+	* misc/specs/make-sub-spec: New file.
+
+	* misc/specs/Makefile.am (EXTRA_DIST): Added make-sub-spec.
+
+	* configure.ac: Generate confpackges.files.
+
+2011-11-28  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: version 0.3.2.
+
+	* src/conf.d/sys/util-linux,trunk.lcopy (GIT_REPOSITORY): Updated.
+
+	* src/conf.d/sys/util-linux-ng,trunk.lcopy (GIT_REPOSITORY): Ditto.
+
+2011-08-05  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/debwatch (debwatch_help_genconf): Fix
+	help document.
+
+2011-07-31  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/liblcopy.sh.in (lcopy_srpmix_plugin): Don't
+	enable nctags when it is listed on disable_args.
+
+2011-07-07  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/bind,released.lcopy (DEBWATCH_WATCH): Wrap
+	double quotes.
+
+	* src/conf.d/sys/scheme2js,released.lcopy (DEBWATCH_WATCH): Wrap
+	double quotes.
+
+	* src/conf.d/sys/sysstat,trunk.lcopy (DEBWATCH_WATCH): Ditto.
+
+	* src/backends/debwatch (write_spec): Use
+	double quotes to print DEBWATCH_WATCH.
+
+2011-07-04  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Added misc/m4 to AC_CONFIG_MACRO_DIR.
+
+2011-06-24  Masatake YAMATO  <yamato@redhat.com> 
+
+	* src/conf.d/sys/ctags,trunk.lcopy (LCOPY_DISABLE_PLUGINS): Disable
+	ctags and nctags plugins to avoid running ctags on ctags. 
+
+2011-04-08  Masatake YAMATO  <yamato@redhat.com> 
+
+	* src/backends/svn (svn_rebirth): Use only sed. 
+	Don't use grep Suggested by Satoru SATOH <ssato@redhat.com>.
+
+2011-04-08  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.3.1.
+
+	* src/liblcopy.sh.in (lcopy_prepare_archives): New function.
+	(lcopy_srpmix_plugin): Don't refer LCOPY_DISABLE_PLUGINS and
+	LCOPY_ENABLE_PLUGINS directly.
+
+	* src/lcopy-checkout (main): use `lcopy_prepare_archives'.
+
+	* src/lcopy-update (update): use `lcopy_prepare_archives'.
+
+2011-04-07  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.3.0.
+	Check spawn.
+
+	* src/liblcopy.sh.in (lcopy_srpmix_plugin): Use
+	$LCOPY_ENABLE_PLUGINS and $LCOPY_DISABLE_PLUGINS.
+
+	* misc/specs/lcopy.spec.in (Requires): Added spawn.
+
+	* src/lcopy-update: Use spawn.
+
+2011-03-25  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.21.
+
+	* src/liblcopy.sh.in (lcopy_srpmix_plugin): Don't run
+	vanilla plugin. Run nctags plugin.
+
+2011-03-24  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (main): Fix a typo(--just-print-cmdline). 
+
+2011-03-22  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/virt-manager,trunk.lcopy: Updated.
+
+	* src/conf.d/sys/Makefile.am (dist_confd_DATA): Added
+	virt-v2v,trunk.lcopy. 
+	Both contributed by Hajime Taira <htaira@redhat.com>.
+
+2011-03-11  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.20.
+
+	* src/lcopy-checkout: Added --sync-with-conf
+	option.
+
+2011-03-06  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.19.
+
+	* src/lcopy-update: Create CRADLE file.
+
+	* src/lcopy-checkout: Create CRADLE file.
+
+2011-02-28  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/cvs (cvs_checkout): For avoiding blocking,
+	run ssh -o 'StrictHostKeyChecking no' before running cvs
+	command on a :extssh: repository.
+
+2011-02-24  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.18.
+
+2011-02-23  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/git: Added branch support.
+
+2010-12-20  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.17.
+
+	* *: Rename dwatch to debwatch.
+
+2010-12-14  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/Makefile.am (dist_confd_DATA): Added
+	ietf-draft,trunk.lcopy.
+
+2010-12-13  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.16.
+
+	* src/backends/rsync: Added new backend.
+
+2010-10-05  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.14.
+
+	* src/backends/dwatch (dwatch_print_cmdline): Modify
+	broken quotes.
+
+2010-10-04  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.13.
+
+	* src/backends/dwatch: Accept file:/// and -.
+
+	* src/backends/darcs (darcs_rebirth): do cd $dir.
+
+	* src/backends/bzr (bzr_rebirth): Ditto.
+
+	* src/backends/git (git_rebirth): Ditto.
+
+	* src/backends/hg (hg_rebirth): Ditto.
+
+	* src/backends/svn (svn_rebirth): Ditto.
+
+2010-10-02  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/dwatch (dwatch_print_cmdline): Fix a typo.
+
+2010-10-02  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.12.
+
+	* src/backends/dwatch: New backend.
+
+2010-10-01  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.11.
+
+	* src/backends/bzr: Added lp as acceptable schema.
+
+2010-09-01  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.10.
+
+	* src/conf.d/sys Introduce new indirect directory.
+
+2010-08-18  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.9
+
+	* src/lcopy-update (update): Fix a typo.
+	(parse_arguments): don't use `lcopy_verify_directory'
+	function if --no-update-p given.
+
+2010-08-16  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.8.
+
+	* src/lcopy-update: Added --no-update-p option.
+
+2010-08-08  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.7.
+
+	* src/liblcopy_backends.sh.in (COMMON_SUBCMDS): Added print_cmdline
+
+	* src/lcopy-checkout: Added --just-print-cmdline option.
+
+	* src/liblcopy.sh.in (lcopy_backend_print_cmdline): New function.
+
+	* src/backends/wgetx (wgetx_print_cmdline): New function.
+
+	* src/backends/svn (svn_print_cmdline): New function.
+
+	* src/backends/hg (hg_print_cmdline): New function.
+
+	* src/backends/git (git_print_cmdline): New function.
+
+	* src/backends/darcs (darcs_print_cmdline): New function.
+
+	* src/backends/cvs (cvs_print_cmdline): New function.
+
+	* src/backends/bzr (bzr_print_cmdline): New function.
+
+	* misc/specs/lcopy.spec.in (Require): Write comment
+	about the relationship between lcopy commands and
+	srpmix/sbuild.
+
+2010-07-12  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/bzr (bzr_update): Set BZR_LOG /dev/null.
+
+2010-07-02  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/bzr (bzr_update): Use bzr pull instead
+	of bzr update.
+
+2010-06-29  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/*: Remove double quotes from patterns in [[.
+
+2010-01-20  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends (*): Fix broken log names.
+
+	* src/lcopy-update (parse_arguments): Fix a typo.
+
+2010-01-08  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-genconf: Rename --generator to --generated-by.
+
+2009-12-23  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in (Requires): Remove srpmix.
+	Using srpmix-plugin in lcopy is optional.
+
+2009-12-20  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Version 0.2.6.
+
+	* src/liblcopy.sh.in (lcopy_print_conf): Record LCOPY_UPDATE
+	and LCOPY_GENERATOR.
+
+	* src/lcopy-update (update): Don't update if $LCOPY_UPDATE
+	is NO.
+
+	* src/lcopy-genconf (main): Added new option --no-update
+	and --generator.
+
+2009-12-14  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/* (*_update): Don't create a log file.
+	Use /dev/null.
+
+2009-12-02  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/darcs (darcs_update): Use -gt to compare numbers
+	instead of '>'.  '>' didn't work.
+
+2009-11-17  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-envelop (parse_arguments): Added LINKIN_ROOT_DIR.
+
+2009-10-26  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/wgetx (wgetx_update): Do check out if
+	pre-build directory is empty.
+	(wgetx_checkout::archives): Added -p to mkdir.
+
+2009-10-23  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/wgetx (wgetx_checkout): Set repo.
+	Fix typos. Remove tar.gz in pre_build directory.
+
+2009-10-22  Masatake YAMATO  <yamato@redhat.com>
+
+	* autogen.sh: Run yum if --bootstrap is given.
+
+	* configure.ac: Check the existance of srpmix-plugin.
+
+	* src/backends/Makefile.am (dist_backends_SCRIPTS): Added wgetx.
+
+	* src/backends/wgettarx: Implemented.
+
+	* src/backends/hg (repo_check): Remove hg_spec.
+
+2009-10-21  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (main): Don't create vanilla symlink.
+	Create archives only if it doesn't exist.
+
+	* src/liblcopy.sh.in (lcopy_srpmix_plugin): Disable vanilla plugin.
+
+2009-10-18  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in (Group): Specify %{_libexecdir}/lcopy/*
+	as install file instead of %{_libexecdir}/lcopy/backends.
+
+2009-10-14  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/update.sh: Redirect the output of 
+	  update.sh to stderr.
+
+2009-10-13  Masatake YAMATO  <yamato@redhat.com>
+
+	* autogen.sh: Install requried packages.
+
+2009-10-13  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/qt-jambi,trunk.lcopy: Added new file.
+
+2009-10-08  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-envelop (main): Use $tmp_dir in the scope where
+	tmp_dir si defined.
+

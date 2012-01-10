@@ -1,0 +1,22 @@
+- existence checking
+- ping
+- plugin rerunning
+
+cman
+procps-
+net-tools-
+sendmail
+iscsi-initiator-utils
+postfix
+SysVinit
+java-1.6.0-openjdk
+nss_ldap
+0xFFFF
+sysklogd
+telnet
+tcsh
+bash
+krb5
+ntp
+vsftpd
+xorg-x11-proto-devel

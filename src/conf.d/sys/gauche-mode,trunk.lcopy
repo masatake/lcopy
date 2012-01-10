@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+DARCS_CF_VERSION="0.0.0"
+DARCS_REPOSITORY="http://www.katch.ne.jp/~leque/software/repos/gauche-mode/"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="darcs"
+LCOPY_PACKAGE="gauche-mode"
+LCOPY_BRANCH="trunk"

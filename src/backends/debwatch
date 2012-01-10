@@ -1,0 +1,392 @@
+#!/bin/bash
+
+BACKEND=debwatch
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+function write_spec
+{
+    local watch_spec=$1
+    local dpkg=$2
+
+    common_write_spec 
+    echo "DEBWATCH_WATCH_SPEC=$watch_spec"
+    echo "DEBWATCH_PACKAGE=${dpkg}"
+    echo -n "DEBWATCH_WATCH=\""
+        case "$watch_spec" in
+	    ftp://*)
+		:
+		;;
+	    file:///*)
+		cat ${watch_spec/file:\/\//}
+		;;
+	    -)
+		cat
+		;;
+	esac
+    echo -n "\""
+    echo ""
+}
+
+function dpkg_check
+{
+    local dpkg=$1
+    local dpkg_spec="^[-a-zA-Z0-9]+$"
+
+    if [ -z "${dpkg}" ]; then
+	echo "broken debwatch command line: cannot find debian package specification" 1>&2
+	return 1
+    elif ! ( [[ "${dpkg}" =~ $dpkg_spec ]] ); then
+	echo "broken debwatch command line: unrecognizable dpkg specification: $dpkg" 1>&2
+	echo "expected dpkg specification: " 1>&2
+	echo "	$dpkg_spec" 1>&2
+	return 1
+    fi
+
+    return 0
+
+}
+
+function watch_spec_check
+{
+    local watch_spec=$1
+    
+    case "$watch_spec" in
+	ftp://*)
+	    local ftp_spec="^ftp://([-a-zA-Z0-9.]+)(/.*)$"
+	    if [[ "$1" =~ ${ftp_spec} ]]; then
+		return 0
+	    else
+		echo "broken ftp spec: $1" 1>&2
+		return 1
+	    fi
+	    ;;
+	file://*)
+	    local file_spec="^file://(/.*)$"
+	    if [[ "$1" =~ ${file_spec} ]]; then
+		watch_file="${BASH_REMATCH[1]}"
+		if ! [ -r "${watch_file}" ]; then
+		    echo "Cannot read watch file: ${watch_file}" 1>&2
+		    return 1
+		else
+		    return 0
+		fi
+	    else
+		echo "broken file spec: $1" 1>&2
+		return 1
+	    fi
+	    ;;
+	-)
+	    return 0
+	    ;;
+	*)
+	    {
+		echo "Broken watch spec: $watch_spec"
+		return 1
+	    }  1>&2
+	    ;;
+    esac
+}
+
+#
+# HELP
+#
+function debwatch_help_help
+{
+    common_help_help "$@"
+}
+
+function debwatch_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function debwatch_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function debwatch_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} debwatch 'checkout' [WATCH-SPEC] DPKG
+    echo "	About debwatch command see \"debwatch --help\""
+}
+
+function debwatch_genconf
+{
+    local original=$@
+    local cmd
+    local watch_spec
+    local dpkg
+
+
+    if ! ( [ $# = 2 ] || [ $# = 3 ] ); then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+
+    cmd=$1
+    shift
+    if ! [ "$cmd" = "checkout" ] ; then
+	echo "unknown command for checkout: $cmd" 1>&2
+	return 1
+    fi
+    
+    if [ $# = 2 ]; then
+	watch_spec=$1
+	shift
+	if ! watch_spec_check "$watch_spec"; then
+	    return 1
+	fi
+    else
+	watch_spec="ftp://$(debwatch-url --print-default-host)$(debwatch-url --print-default-main-dir)"
+    fi
+    
+
+    dpkg=$1
+    shift
+    if ! dpkg_check "${dpkg}"; then
+	return 1
+    fi
+    write_spec "$watch_spec" "${dpkg}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function debwatch_help_checkout
+{
+    echo "	$0 " "checkout" "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function debwatch_checkout
+{
+    local input=$1
+    local output_dir=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${DEBWATCH_PACKAGE}" ]; then
+	echo "no DEBWATCH_PACKAGE in $input" 1>&2
+	return 1
+    fi
+
+    if [ -z "${DEBWATCH_WATCH_SPEC}" ]; then
+	echo "no DEBWATCH_WATCH_SPEC in $input" 1>&2
+	return 1
+    fi
+    
+    case "${DEBWATCH_WATCH_SPEC}" in
+	ftp://*)
+	    ( 
+		cd ${output_dir}
+		common_spawn debwatch checkout "${DEBWATCH_WATCH_SPEC}" "${DEBWATCH_PACKAGE}"
+	    )
+	    ;;
+	file:///*|-)
+	    if [ -z "${DEBWATCH_WATCH}" ]; then
+		echo "no DEBWATCH_WATCH is $input(${DEBWATCH_WATCH_SPEC})" 1>&2
+		return 1
+	    fi
+	    
+	    (
+		cd ${output_dir}
+		echo "${DEBWATCH_WATCH}" | common_spawn debwatch checkout - "${DEBWATCH_PACKAGE}"
+	    )
+	    ;;
+	*)
+	    echo "Unrecognized format of DEBWATCH_WATCH_SPEC" 1>&2
+	    return 1
+    esac
+
+    return $?
+}
+
+#
+# PRINT_CMDLINE
+#
+function debwatch_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function debwatch_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${DEBWATCH_PACKAGE}" ]; then
+	    echo "no DEBWATCH_PACKAGE in $input" 1>&2
+	    return 1
+	fi
+	
+	if [ -z "${DEBWATCH_WATCH_SPEC}" ]; then
+	    echo "no DEBWATCH_WATCH_SPEC in $input" 1>&2
+	    return 1
+	fi
+
+	case "${DEBWATCH_WATCH_SPEC}" in
+	    ftp://*)
+		echo "debwatch checkout ${DEBWATCH_WATCH_SPEC} ${DEBWATCH_PACKAGE}"
+		;;
+	    file:///*|-)
+		# TODO
+		echo "echo '${DEBWATCH_WATCH}' | debwatch checkout - ${DEBWATCH_PACKAGE}"
+		;;
+	    *)
+		echo "Unrecognized format of DEBWATCH_WATCH_SPEC" 1>&2
+		return 1
+		;;
+	    esac
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function debwatch_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function debwatch_update
+{
+    local input=$1
+    local update_dir=$2
+
+    cd "${update_dir}"
+
+    common_spawn debwatch update
+    local status=$?
+
+    if [ "$status" = 3 ]; then
+	return 0
+    elif [ "$status" = 0 ]; then
+	return 1
+    else
+	return 2
+    fi
+}
+
+#
+# DIRP
+# 
+function debwatch_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function debwatch_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -f ${dir}/.debwatch
+}
+
+#
+# REBIRTH
+#
+function debwatch_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function debwatch_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! debwatch_dirp ${dir}; then
+	echo "Not debwatch directory: ${dir} " 1>&2
+	return 1
+    fi
+
+    cd $dir
+    source <(debwatch info)
+    if [ $? != 0 ]; then
+	echo "failed in debwatch info invocation (pwd: $dir))" 1>&2
+	return 1
+    fi
+
+    case ${DEBWATCH_WATCH_SPEC} in
+	ftp://*)
+	    echo
+	    ;;
+	file:///*|-)
+	    echo "${DEBWATCH_WATCH}"
+	    ;;
+    esac | write_spec "${DEBWATCH_WATCH_SPEC}" "${DEBWATCH_PACKAGE}"
+    echo $?
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?
+
+
+
+
+# http://git.debian.org/?p=devscripts/devscripts.git;a=blob;f=scripts/uupdate.sh;h=ab24d54d0712308c2200e994c064ec5c5732e1f3;hb=HEDA
+# http://packages.debian.org/ja/sid/devscripts
+# usage: http://www.debian.org/doc/maint-guide/ch-update.en.html
+
+# # sudo yum -y install dpkg-devel
+# # git clone git://git.debian.org/devscripts/devscripts.git
+# $ cat bind.watch
+# version=3
+# http://ftp.yz.yamagata-u.ac.jp/pub/network/isc/bind/(\d.*)/ \
+#   bind-(\d.*)\.tar\.gz
+
+# $ perl -I devscripts devscripts/scripts/uscan.pl \
+#   --watchfile bind.watch \
+#  --upstream-version 9.0.0 \
+#  --package bind  \
+#  --dehs
+# <dehs>
+# <package>bind</package>
+# <debian-uversion>9.0.0</debian-uversion>
+# <debian-mangled-uversion>9.0.0</debian-mangled-uversion>
+# <upstream-version>9.7.1</upstream-version>
+# <upstream-url>http://ftp.yz.yamagata-u.ac.jp/pub/network/isc/bind/9.7.1/bind-9.7.1.tar.gz</upstream-url>
+# <status>Newer version available</status>
+# <messages>Not downloading as --package was used.  Use --download to force downloading.</messages>
+# </dehs>
+
+
+# wget -nH --mirror http://ftp.debian.org/debian/pool/main/  --accept '*.diff.gz'
+
+
+# *.watch: *.diff.gz
+# 	 ...
+
+# filterdiff -z -i '*/debian/watch' /old/tmp/debian/main/a/aggregate/aggregate_1.6-6.diff.gz |  patch  -o - -s

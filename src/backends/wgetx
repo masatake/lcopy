@@ -1,0 +1,292 @@
+#!/bin/bash
+
+BACKEND=wgetx
+VERSION="0.0.0"
+
+source liblcopy_backends.sh || exit 1
+
+file_spec="^file:///.$"
+http_spec="^http://.*$"
+ftp_spec="^ftp://.*$"
+
+
+function write_spec
+{
+    local repo=$1
+
+    common_write_spec
+    printf "WGETX_URL=\"$1\"\n"
+    printf "WGETX_ENABLE_TRACKING=\"no\"\n"
+}
+
+function repo_check
+{
+    local repo=$1
+
+    if [ -z "${repo}" ]; then
+	echo "broken wgetx command line: no repo" 1>&2
+	return 1
+    fi
+    
+
+    if ! ( [[ "${repo}" =~ $file_spec ]] || \
+	   [[ "${repo}" =~ $http_spec ]] || \
+	   [[ "${repo}" =~ $ftp_spec ]]    ); then
+	echo "broken wgetx command line: unrecognizable repo specification: $repo" 1>&2
+	echo "expected repo specifications: " 1>&2
+	for s in "$file_spec" "$http_spec" "$ftp_spec"; do
+	    echo "	$s" 1>&2
+	done
+	return 1
+    else
+	return 0
+    fi
+}
+
+#
+# HELP
+#
+function wgetx_help_help
+{
+    common_help_help "$@"
+}
+
+function wgetx_help
+{
+    common_help "$@"
+}
+
+#
+# GENCONF_FORMAT
+# 
+function wgetx_genconf_format
+{
+    common_genconf_format "$@"
+}
+
+#
+# GENCONF
+# 
+function wgetx_help_genconf
+{
+    local prefix
+
+    if [ "$1" != "format" ]; then
+	prefix="$0 genconf"
+    fi
+
+    echo "	" ${prefix} wgetx URL
+    echo "	" "(acceptable scheme for URL: file:///..., http://..., and ftp://...)"
+}
+
+function wgetx_genconf
+{
+    local original=$@
+    local repo
+
+
+    if [ $# != 1 ]; then
+	echo "wrong number of arguments: $original" 1>&2
+	return 1
+    fi
+
+    repo=$1
+    shift
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+    write_spec "${repo}"
+    return 0
+}
+
+#
+# CHECKOUT
+#
+function wgetx_help_checkout
+{
+    echo "	$0 " "FILE.lcopy" "OUTPUT-DIR"
+}
+
+function wgetx_checkout
+{
+    local input_owner
+    local input=$1
+    local output_dir=$2
+
+
+    if ! input_owner=$(stat -c "%o" $input) 2>&1 > /dev/null; then
+	return 1
+    fi
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ -z "${WGETX_URL}" ]; then
+	echo "no WGETX_URL in $input" 1>&2
+	return 1
+    fi
+    local repo="${WGETX_URL}"
+
+    local pre_build=${output_dir}
+    local archives=$(mkdir -p ${output_dir}/../archives; cd ${output_dir}/../archives ; pwd)
+    if ! which vanillax > /dev/null 2>&1; then
+	echo "cannot find vanillax command" 1>&2
+	return 1
+    fi
+
+    mkdir -p $archives
+    if [[ "$repo" =~ ${file_spec} ]]; then
+	local file=${repo/file:\/\//}
+	if ! [ -r "$file" ]; then
+	    echo "cannot read $file" 1>&2
+	    return 1
+	fi
+	
+	local file_owner=$(stat -c "%o" $file)
+	if [ "$file_owner" != "$input_owner" ]; then
+	    echo "$input and $file are owned different user" 1>&2
+	    return 1
+	fi
+
+	if ! cp -av "$file" $archives; then
+	    return $?
+	fi
+    else
+	if ! ( cd $archives; wget $repo ); then
+	    return $?
+	fi
+    fi
+
+    local a
+    local r
+    for a in ${archives}/*; do
+	vanillax $a ${pre_build}
+	r=$?
+	break
+    done
+
+    echo $repo > ${pre_build}/.wgetx
+    return $r
+}
+
+#
+# PRINT_CMDLINE
+#
+function wgetx_help_print_cmdline
+{
+    echo "	$0 " "print_cmdline" "FILE.lcopy" "checkout"
+}
+
+function wgetx_print_cmdline
+{
+    local input=$1
+    local cmd=$2
+
+    if ! source "$input"; then
+	return 1
+    fi
+
+    if [ "$cmd" = "checkout" ]; then
+	if [ -z "${WGETX_URL}" ]; then
+	    echo "no WGETX_URL in $input" 1>&2
+	    return 1
+	fi
+	echo wget "${WGETX_URL}"
+    else
+	return 1
+    fi
+
+    return 0
+}
+
+#
+# UPDATE
+#
+function wgetx_help_update
+{
+    echo "	$0 " "update" "FILE.lcopy" "UPDATE-DIR"
+}
+
+function wgetx_update
+{
+    local input=$1
+    local update_dir=$2    
+
+    if [ -d "$update_dir" ]; then
+	return 0
+    elif [ '*' = "$(basename $update_dir)" ]; then
+	if wgetx_checkout $input $(dirname $update_dir); then
+	    return 1
+	else
+	    return 0
+	fi
+    fi
+}
+
+#
+# DIRP
+# 
+function wgetx_help_dirp
+{
+    echo "	$0 " "dirp" "[DIR]"
+}
+
+function wgetx_dirp
+{
+    local dir=${1:-$(pwd)}
+    
+    test -d ${dir}/.wgetx
+}
+
+#
+# REBIRTH
+#
+function wgetx_help_rebirth
+{
+    echo "	$0 " "rebirth" "[DIR]"
+}
+
+function wgetx_rebirth
+{
+    local dir=${1:-$(pwd)}
+
+    if ! wgetx_dirp ${dir}; then
+	echo "Not wgetx directory: ${dir} " 1>&2
+	return 1
+    fi
+
+
+    local wgetx_url=$(cat ${dir}/.wgetx)
+    if [ $? != 0 ]; then
+	echo "failed in read wgetx dot file (pwd: $(pwd))" 1>&2
+	return 1
+    fi
+
+    local repo="${wgetx_url}"
+    if ! repo_check "${repo}"; then
+	return 1
+    fi
+
+    write_spec "${repo}"
+}
+
+function main
+{
+    common_main "$@"
+    return $?
+}
+
+main "$@"
+exit $?
+
+
+#WGETX_CF_VERSION="0.0.0"
+#WGETX_URL="file://..."
+#WGETX_ENABLE_TRACKING=no
+
+#LCOPY_CF_VERSION="0.2.5"
+#LCOPY_VCS="wgetx"
+#LCOPY_PACKAGE="foo"
+#LCOPY_BRANCH="1.0.0"
+

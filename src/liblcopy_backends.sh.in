@@ -1,0 +1,96 @@
+# expects: 
+# BACKEND=
+# VERSION=
+
+
+COMMON_SUBCMDS="checkout dirp genconf genconf_format print_cmdline rebirth update"
+
+function common_help_help
+{
+    common_help
+}
+
+function common_help
+{
+    local subcmd=$1
+    shift
+
+    if [ -z "$subcmd" ]; then
+	for s in $COMMON_SUBCMDS; do
+	    if type -t "${BACKEND}_help_$s" > /dev/null 2>&1; then
+		${BACKEND}_help_$s
+	    fi
+	done
+    else
+	for s in $COMMON_SUBCMDS; do
+	    if [ $s = $subcmd ]; then
+		if type -t "${BACKEND}_help_$s" > /dev/null 2>&1; then
+		    ${BACKEND}_help_$s
+		fi
+		break
+	    fi
+	done
+    fi
+}
+
+function common_genconf_format
+{
+    ${BACKEND}_help_genconf format
+}
+
+function common_write_spec
+{
+    printf "${BACKEND^^*}_CF_VERSION=\"%s\"\n" "${VERSION}"
+}
+
+
+
+function lcopy_wait_timed
+{
+    KILL_STATUS=142
+    local pid
+    local timeout=$1
+    shift
+    
+
+    "$@" &
+    pid=$!
+
+    while kill -s CONT $pid > /dev/null 2>&1; do
+	timeout=$(( timeout - 1 ))
+	if (( timeout >= 0 )); then
+	    sleep 1
+	else
+	    kill $pid > /dev/null 2>&1
+	    return $KILL_STATUS
+	fi
+    done
+    wait $pid
+    return $?
+}
+
+function common_spawn
+{
+    "$@"
+    return $?
+}
+
+function common_main
+{
+    local cmd=$1
+    shift
+
+    if [ -z "$cmd" ]; then
+	echo "$0: no sub command given" 1>&2
+    fi
+
+
+    if type -t "${BACKEND}_${cmd}" > /dev/null 2>&1; then
+        ${BACKEND}_"${cmd}" "$@"
+	return $?	
+    else
+	echo "no such command: $cmd" 1>&2
+	return 1
+    fi
+}
+

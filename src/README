@@ -1,0 +1,12 @@
+lcopy: 
+
+lcopy-genconf:  cmdline  -> lcopy.es
+lcopy-checkout: lcopy.es -> archive
+lcopy-update:   archive  -> archive
+lcopy-envelop:  archive  -> srpm
+(package,branch,repository,module,vcs)
+(lcopy package
+       :vcs VCS
+       :repository REPOSITORY
+       &optional :branch BRANCH
+       &optioanl :module MODULE)

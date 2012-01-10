@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+SVN_CF_VERSION="0.0.0"
+SVN_REPOSITORY="http://svn.gnome.org/svn/goocanvas/trunk/"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="svn"
+LCOPY_PACKAGE="goocanvas"
+LCOPY_BRANCH="trunk"

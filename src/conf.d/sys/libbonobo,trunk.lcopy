@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.0"
+GIT_REPOSITORY="http://git.gnome.org/libbonobo"
+LCOPY_CF_VERSION="0.2.6"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="libbonobo"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

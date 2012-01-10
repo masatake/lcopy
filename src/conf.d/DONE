@@ -1,0 +1,57 @@
+DONE:
+
+git clone git://git.fedorahosted.org/git/anaconda.git anaconda
+git clone http://git.cryp.to/autoconf-archive autoconf-archive
+git clone git://git.sv.gnu.org/autoconf autoconf
+git clone git://git.savannah.gnu.org/automake.git automake
+git clone git://github.com/yhara/biwascheme.git biwascheme
+git clone git://anongit.freedesktop.org/git/cairo cairo
+git clone git://anongit.freedesktop.org/ConsoleKit ConsoleKit
+svn checkout http://svn.fedorahosted.org/svn/corosync/trunk corosync
+svn checkout http://svn.gnome.org/svn/glib/trunk glib2
+git clone git://sources.redhat.com/git/glibc.git glibc
+svn checkout http://svn.gnome.org/svn/goocanvas/trunk/ goocanvas
+git clone git://anongit.freedesktop.org/~bilboed/gstreamer gstreamer
+svn checkout http://svn.gnome.org/svn/gtk+/trunk gtk2
+git clone git://anongit.freedesktop.org/hal hal
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/teigland/dlm.git kernel
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-2.6-rt.git kernel
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git kernel
+git clone git://git.et.redhat.com/libvirt.git libvirt
+git clone git://git.kernel.org/pub/scm/docs/man-pages/man-pages.git man-pages
+svn checkout http://svn.fedorahosted.org/svn/sos/trunk/src sos
+svn checkout http://anonsvn.wireshark.org/wireshark/trunk/ wireshark
+svn checkout svn://svn@svn.a-k-r.org/akr/wfo/trunk wfo
+git clone http://rpm.org/git/rpm.git rpm
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/horms/kexec-tools.git kexec-tools
+git clone git://anongit.freedesktop.org/liboil liboil
+git clone git://git.savannah.gnu.org/libtool.git libtool
+git clone git://git.samba.org/samba.git samba
+git clone git://git.adiscon.com/git/rsyslog.git rsyslog
+git clone git://git.savannah.gnu.org/texinfo.git texinfo
+git clone git://git.sv.gnu.org/m4 m4
+git clone git://git.fedorahosted.org/spacewalk.git/ spacewalk
+
+
+ON:
+
+git clone git://repo.or.cz/lunit.git lunit
+git clone http://git.debian.org/git/parted/parted.git parted
+git clone git://anongit.freedesktop.org/git/pixman pixman
+git clone git://anongit.freedesktop.org/PolicyKit PolicyKit
+
+NOT YET:
+
+cvs *
+lcopy-genconf --output-dir=.  java-1.6.0-openjdk,icedtea hg clone http://icedtea.classpath.org/hg/icedtea
+hg clone http://icedtea.classpath.org/hg/icedtea6 java-1.6.0-openjdk
+hg clone http://icedtea.classpath.org/hg/openjdk6 java-1.6.0-openjdk
+hg clone http://xenbits.xensource.com/xen-3.1-testing.hg kernel
+svn checkout http://www.hpccommunity.org/hpccommunity-repo/hpccommunity/projects/Lava/ lava
+svn checkout https://libmt.svn.sourceforge.net/svnroot/libmt libmt
+svn checkout http://svn.gnome.org/svn/pango/trunk pango
+git clone http://rpm.org/git/rpm-python.git rpm
+git clone git://rubyforge.org/rtags.git rtags
+svn checkout https://silentbob.svn.sourceforge.net/svnroot/silentbob/branches/silentbob2 silentbob
+svn checkout https://srpmix.svn.sourceforge.net/svnroot/srpmix srpmix
+svn checkout https://tomoe.svn.sourceforge.net/svnroot/tomoe/tomoe/trunk tomoe

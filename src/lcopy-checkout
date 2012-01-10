@@ -1,0 +1,244 @@
+#!/bin/bash
+
+source liblcopy.sh ||  exit 1
+
+
+OUTPUT_DIR=.
+
+INPUT=
+LCOPY_VCS=
+LCOPY_PACKAGE=
+LCOPY_BRANCH=
+NO_ERROR_MESSAGE_IF_EXISTING=
+JUST_PRINT_CMDLINE=
+SYNC_WITH_CONF=
+
+readonly ERROR=1
+readonly EXISTED=2
+
+function print_usage
+{
+    echo "Usage: "
+    echo "$0 --help|-h"
+    echo "$0 [--output-dir=OUTPUT-DIR] [--no-error-message-if-existing] [--cradle-name=NAME] [--sync-with-conf] FILE.lcopy"
+    echo "$0 --just-print-cmdline [FILE.lcopy]"
+    echo ""
+    echo "(taking checkout configurations from stdin)"
+    echo "Exit status: "
+    echo "	0: Successful"
+    echo "	1: Error"
+    echo "	2: Directory for checkout out to exists"
+    echo "environment variables:"
+    echo "SRPMIX_CRADLE_NAME=NAME"
+}
+
+function parse_arguments
+{
+    while [ $# -gt 0 ]; do
+	case "$1" in
+	    --help|-h)
+		print_usage
+		exit 0
+		;;
+	    (--output-dir=*)
+                OUTPUT_DIR=${1/--output-dir=}
+                ;;
+	    --no-error-message-if-existing)
+	        NO_ERROR_MESSAGE_IF_EXISTING=yes
+		;;
+            --just-print-cmdline)
+		JUST_PRINT_CMDLINE=yes
+		NO_ERROR_MESSAGE_IF_EXISTING=yes
+		;;
+	    --sync-with-conf)
+		SYNC_WITH_CONF=yes
+		NO_ERROR_MESSAGE_IF_EXISTING=yes
+		;;
+	    (--cradle-name=*)
+	        SRPMIX_CRADLE_NAME=${1/--cradle-name=}
+	        ;;
+	    --*)
+		echo "unknown option: $1" 1>&2
+		print_usage 1>&2
+		exit $ERROR
+		;;
+	    *)
+		INPUT=$1
+		shift
+
+		if ! [ -r "$INPUT" ]; then
+		    echo "cannot read: $INPUT" 1>&2
+		    exit $ERROR
+		fi
+		break
+		;;
+	esac
+	shift
+    done
+
+    if [ -z "$JUST_PRINT_CMDLINE" ]; then
+	if ! [ -d "$OUTPUT_DIR" ]; then
+	    echo "no such directory: $OUTPUT_DIR" 1>&2
+	    exit $ERROR
+	fi
+    
+	if ! [ -w "$OUTPUT_DIR" ]; then
+	    echo "cannot write to: $OUTPUT_DIR" 1>&2
+	    exit $ERROR
+	fi
+    fi
+
+
+    if [ -z "$INPUT" ] && [ -n "$JUST_PRINT_CMDLINE" ]; then
+	if ! [ -f "checkout.lcopy" ]; then
+	    echo "Not found: checkout.lcopy" 1>&2
+	    print_usage 1>&2
+	    exit $ERROR
+	else
+	    INPUT="checkout.lcopy"
+	fi
+    fi
+
+    if [ -z "$INPUT" ]; then
+	echo "no lcopy file given" 1>&2
+	print_usage 1>&2
+	exit $ERROR
+    fi
+
+    if [ "$#" -gt 0 ]; then
+	echo "too many arguments: $@" 1>&2
+	print_usage 1>&2
+	exit $ERROR
+    fi
+}
+
+function load_input
+{
+    source "$INPUT"
+
+    if [ -z "$LCOPY_VCS" ]; then
+	echo "no LCOPY_VCS in $INPUT" 2>&1
+	exit $ERROR
+    else
+	local vcs_found
+	for v in $(lcopy_backends_list); do
+	    if [ "$LCOPY_VCS" = "$v" ] ;then
+		vcs_found=yes
+		break
+	    fi
+	done
+	if [ -z "$vcs_found" ]; then
+	    echo "unsupported vcs: $LCOPY_VCS" 1>&2
+	    exit $ERROR
+	fi
+    fi
+
+    
+    if [ -z "$LCOPY_PACKAGE" ]; then
+	echo "no LCOPY_PACKAGE in $INPUT" 2>&1
+	exit $ERROR
+    fi
+    
+    if [ -z "$LCOPY_BRANCH" ]; then
+	echo "no LCOPY_BRANCH in $INPUT" 2>&1
+	exit $ERROR
+    fi
+}
+
+function transfer
+{
+    local from=$1
+    local to="${OUTPUT_DIR}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}"
+    local replace=$2
+    local branch="${LCOPY_BRANCH}"
+
+    if [ "${replace}" = yes ]; then
+	mv "${to}/${branch}" "${to}/.${branch}"
+    fi
+    
+    mkdir -p "${to}"
+    mv "${from}" "${to}/"
+
+    if [ "${replace}" = yes ]; then
+	rm -rf "${to}/.${branch}"
+    fi
+
+    return $?
+}
+
+
+function main
+{
+    local my_tmpdir
+    local base_dir
+    local checkout_dir
+    local status
+    local replace
+
+
+    parse_arguments "$@"
+    load_input $INPUT
+
+    if [ x"$JUST_PRINT_CMDLINE" = x"yes" ]; then
+	lcopy_backend_print_cmdline "$LCOPY_VCS" "$INPUT" checkout
+	return $?
+    elif [ -d "${OUTPUT_DIR}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}/${LCOPY_BRANCH}" ]; then
+	if [ "${NO_ERROR_MESSAGE_IF_EXISTING}" != "yes" ]; then
+	    echo "${OUTPUT_DIR}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}/${LCOPY_BRANCH} already exits" 1>&2
+	fi
+
+	if [ "${SYNC_WITH_CONF}" = "yes" ]; then
+	    local old_conf="${OUTPUT_DIR}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}/${LCOPY_BRANCH}/checkout.lcopy"
+	    local new_conf="${INPUT}"
+	    if [ -r "${old_conf}" ]; then
+		local old_cmdline=$(lcopy-checkout --just-print-cmdline "${old_conf}")
+		local new_cmdline=$(lcopy-checkout --just-print-cmdline "${new_conf}")
+		if [ "${old_cmdline}" = "${new_cmdline}" ]; then
+		    return $EXISTED
+		else
+		    replace=yes
+		fi
+	    else
+		return $EXISTED
+	    fi
+	else
+	    return $EXISTED
+	fi
+    fi
+
+    
+    my_tmpdir=`mktemp -d`
+    trap "chmod -R u+w $my_tmpdir; /bin/rm -rf $my_tmpdir" 0    
+
+    base_dir=${my_tmpdir}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}/${LCOPY_BRANCH}
+    mkdir -p "${base_dir}"
+ 
+    echo $LCOPY_VERSION > ${base_dir}/LCOPY
+    cp $INPUT ${base_dir}/checkout.lcopy
+
+    checkout_dir=${base_dir}/pre-build
+    mkdir -p "${checkout_dir}"
+    #STATUS
+    lcopy_backend_checkout "$LCOPY_VCS" "$INPUT" "${checkout_dir}"
+    status=$?
+    echo $status > ${base_dir}/STATUS
+    #CRADLE
+    if [ -z "${SRPMIX_CRADLE_NAME}" ]; then
+	SRPMIX_CRADLE_NAME=unknown
+    fi
+    echo ${SRPMIX_CRADLE_NAME} > "${base_dir}/CRADLE"
+
+    lcopy_prepare_archives "${base_dir}" "$LCOPY_ARCHIVE_POINTER"
+
+    if [ "$status" = "0" ]; then
+	lcopy_run_hook checkout "${base_dir}"
+	if transfer "${base_dir}" "${replace}"; then
+	    status=0
+	else
+	    status=$ERROR
+	fi
+    fi
+    return $status
+}
+
+main "$@"

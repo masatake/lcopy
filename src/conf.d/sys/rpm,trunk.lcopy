@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+GIT_CF_VERSION="0.0.0"
+GIT_REPOSITORY="http://rpm.org/git/rpm.git"
+LCOPY_CF_VERSION="0.2.5"
+LCOPY_VCS="git"
+LCOPY_PACKAGE="rpm"
+LCOPY_BRANCH="trunk"

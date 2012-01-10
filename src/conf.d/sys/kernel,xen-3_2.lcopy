@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="http://xenbits.xensource.com/xen-3.2-testing.hg"
+LCOPY_CF_VERSION="0.2.4"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="kernel"
+LCOPY_BRANCH="xen-3_2"

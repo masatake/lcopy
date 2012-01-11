@@ -212,26 +212,26 @@ function main
 
     base_dir=${my_tmpdir}/${LCOPY_PACKAGE:0:1}/${LCOPY_PACKAGE}/${LCOPY_BRANCH}
     mkdir -p "${base_dir}"
- 
     echo $LCOPY_VERSION > ${base_dir}/LCOPY
     cp $INPUT ${base_dir}/checkout.lcopy
-
     checkout_dir=${base_dir}/pre-build
     mkdir -p "${checkout_dir}"
+    lcopy_run_hook pre-checkout "${base_dir}"
     lcopy_backend_checkout "$LCOPY_VCS" "$INPUT" "${checkout_dir}"
     status=$?
     echo $status > ${base_dir}/STATUS
     echo ${SRPMIX_CRADLE_NAME:=unknown} > "${base_dir}/CRADLE"
-
     lcopy_prepare_archives "${base_dir}" "$LCOPY_ARCHIVE_POINTER"
 
     if [ "$status" = "0" ]; then
-	lcopy_run_hook checkout "${base_dir}"
+	lcopy_run_hook post-checkout "${base_dir}"
 	if transfer "${base_dir}" "${replace}"; then
 	    status=0
 	else
 	    status=$ERROR
 	fi
+    else
+	lcopy_run_hook checkout-failed "${base_dir}"
     fi
     return $status
 }

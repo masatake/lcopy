@@ -95,7 +95,7 @@ function update
     local base_dir=$1
     local lcopy_file=${base_dir}/checkout.lcopy
     local update_dir=${base_dir}/pre-build
-    local hook_action=noupdate
+    local hook_action=
     local status
 
 
@@ -134,6 +134,8 @@ function update
 	fi
     fi
  
+    hook_action=pre-update
+    lcopy_run_hook "${hook_action}" "${base_dir}"
     lcopy_backend_update ${LCOPY_VCS} ${lcopy_file} ${update_dir}/*
     status=$?
     echo $status > ${base_dir}/STATUS
@@ -142,7 +144,9 @@ function update
 
     if [ "$status" -eq "1" ]; then
 	status=0
-	hook_action=update
+	hook_action=post-update
+    else
+	hook_action=update-failed
     fi
 
     lcopy_run_hook "${hook_action}" "${base_dir}"            

@@ -218,15 +218,10 @@ function main
 
     checkout_dir=${base_dir}/pre-build
     mkdir -p "${checkout_dir}"
-    #STATUS
     lcopy_backend_checkout "$LCOPY_VCS" "$INPUT" "${checkout_dir}"
     status=$?
     echo $status > ${base_dir}/STATUS
-    #CRADLE
-    if [ -z "${SRPMIX_CRADLE_NAME}" ]; then
-	SRPMIX_CRADLE_NAME=unknown
-    fi
-    echo ${SRPMIX_CRADLE_NAME} > "${base_dir}/CRADLE"
+    echo ${SRPMIX_CRADLE_NAME:=unknown} > "${base_dir}/CRADLE"
 
     lcopy_prepare_archives "${base_dir}" "$LCOPY_ARCHIVE_POINTER"
 

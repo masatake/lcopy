@@ -3,6 +3,8 @@
 	* src/lcopy-update (update): Ues := operator
 	instead of "if test -z".
 
+	* src/lcopy-checkout (main): Ditto.
+
 2012-01-11  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-envelop: Removed.

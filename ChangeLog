@@ -1,3 +1,8 @@
+2012-01-12  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-update (update): Ues := operator
+	instead of "if test -z".
+
 2012-01-11  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-envelop: Removed.

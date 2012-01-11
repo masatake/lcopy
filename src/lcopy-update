@@ -137,12 +137,7 @@ function update
     lcopy_backend_update ${LCOPY_VCS} ${lcopy_file} ${update_dir}/*
     status=$?
     echo $status > ${base_dir}/STATUS
-
-    if [ -z "${SRPMIX_CRADLE_NAME}" ]; then
-	SRPMIX_CRADLE_NAME=unknown
-    fi
-    echo ${SRPMIX_CRADLE_NAME} > "${base_dir}/CRADLE"
-    
+    echo ${SRPMIX_CRADLE_NAME:=unknown} > "${base_dir}/CRADLE"
     lcopy_prepare_archives "${base_dir}" "$LCOPY_ARCHIVE_POINTER"
 
     if [ "$status" -eq "1" ]; then

@@ -1,9 +1,13 @@
+2012-01-17  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/wgetx (file_spec): Fix a typo.
+
 2012-01-12  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-update (update): Added pre-update hook.
 	Suggested by ssato.
 	Rename hooks.
-	
+
 	* src/lcopy-checkout (main): Added pre-checkout hook.
 	Suggested by ssato.
 	Rename hooks.

@@ -5,7 +5,7 @@ VERSION="0.0.0"
 
 source liblcopy_backends.sh || exit 1
 
-file_spec="^file:///.$"
+file_spec="^file:///.*$"
 http_spec="^http://.*$"
 ftp_spec="^ftp://.*$"
 

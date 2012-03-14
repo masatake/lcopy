@@ -11,10 +11,11 @@ cons = \\
 EOF
 
 for x in $lcopies; do
-    svn    add   $(basename $x) > /dev/stderr
+    git    add   $(basename $x) > /dev/stderr
     printf "	%s \\\\\n" $(basename $x)
 done
 echo '	\'
 echo '	$(NULL)'
 
 } > confs.mk
+git add  confs.mk 

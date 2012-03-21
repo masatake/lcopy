@@ -47,10 +47,11 @@ cons = \
 	glib2,trunk.lcopy \
 	glibc,ports.lcopy \
 	glibc,trunk.lcopy \
-	glucsterfs,trunk.lcopy \
+	glusterfs,trunk.lcopy \
 	gnash,trunk.lcopy \
 	gonzui,trunk.lcopy \
 	goocanvas,trunk.lcopy \
+	graphviz,trunk.lcopy \
 	grub2,trunk.lcopy \
 	gstreamer,trunk.lcopy \
 	gtk2,trunk.lcopy \
@@ -88,6 +89,7 @@ cons = \
 	miniascape,trunk.lcopy \
 	mock,trunk.lcopy \
 	monotone,trunk.lcopy \
+	msggen,trunk.lcopy \
 	net-snmp,trunk.lcopy \
 	netbsd-kernel,trunk.lcopy \
 	nfs-utils,trunk.lcopy \

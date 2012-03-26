@@ -89,7 +89,7 @@ cons = \
 	miniascape,trunk.lcopy \
 	mock,trunk.lcopy \
 	monotone,trunk.lcopy \
-	msggen,trunk.lcopy \
+	mscgen,trunk.lcopy \
 	net-snmp,trunk.lcopy \
 	netbsd-kernel,trunk.lcopy \
 	nfs-utils,trunk.lcopy \

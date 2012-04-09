@@ -16,11 +16,6 @@ if test "x$_BASH_" = x; then
    AC_MSG_ERROR([Cannot find bash])
 fi
 
-AC_PATH_PROG([_SRPMIX_], [srpmix])
-if test x$_SRPMIX_ = x; then
-  AC_MSG_ERROR([Cannot find srpmix])
-fi			
-
 AC_PATH_PROG([_CVS_], [cvs])
 if test x$_CVS_ = x; then
   AC_MSG_ERROR([Cannot find cvs])

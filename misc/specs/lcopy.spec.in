@@ -34,7 +34,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/lcopy-checkout
 %{_bindir}/lcopy-update
 %{_bindir}/lcopy-rebirth
-%{_bindir}/lcopy-ping
 %{_bindir}/liblcopy.sh
 %{_bindir}/liblcopy_backends.sh
 %dir %{_libexecdir}/lcopy
@@ -141,6 +140,7 @@ Summary: lcopy wget backend
 Group: Development/Tools
 Requires: lcopy
 Requires: wget
+BuildRequires: vanillax
 Requires: vanillax
 %description backend-wgetx
 lcopy wget backend

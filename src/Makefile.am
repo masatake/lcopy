@@ -16,7 +16,6 @@ dist_bin_SCRIPTS =     \
         lcopy-checkout \
         lcopy-update   \
         lcopy-rebirth  \
-	lcopy-ping     \
 	\
         $(NULL)
 

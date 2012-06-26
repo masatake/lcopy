@@ -4,6 +4,7 @@ Version: @PACKAGE_VERSION@
 Release: @RPM_RELEASE@
 Source: lcopy-@PACKAGE_VERSION@.tar.bz2
 Requires: spawn
+Requires: coreutils
 Buildarch: noarch
 
 Buildroot: %{_tmppath}/%{name}-root

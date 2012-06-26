@@ -157,7 +157,7 @@ function update
 
 function main
 {
-    local ncpus=$(cat /proc/cpuinfo | grep processor | wc -l)
+    local ncpus=$(nproc)
     parse_arguments "$@"
 
     if [ -n "$ROOT_DIR" ]; then

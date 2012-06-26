@@ -6,8 +6,8 @@ lcopies=${dir}/*.lcopy
 
 {
 cat <<EOF
-cons = \\
-       \\
+confs = \\
+        \\
 EOF
 
 for x in $lcopies; do

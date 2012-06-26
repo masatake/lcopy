@@ -1,5 +1,9 @@
 2012-06-26  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/conf.d/update.sh (confs): Fix a typo.
+
+	* src/conf.d/sys/confs.mk (confs): Fix a typo.
+
 	* misc/specs/lcopy.spec.in (Requires): Added coreutils.
 
 	* src/lcopy-update (main): Use nproc.

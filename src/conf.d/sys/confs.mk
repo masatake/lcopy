@@ -1,4 +1,4 @@
-cons = \
+confs = \
        \
 	ConsoleKit,trunk.lcopy \
 	Kahua,trunk.lcopy \

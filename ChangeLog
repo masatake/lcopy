@@ -1,5 +1,9 @@
 2012-07-09  Masatake YAMATO  <yamato@redhat.com>
 
+	* configure.ac: version 0.3.3.
+	
+	* src/liblcopy.sh.in (LCOPY_HOOKDIR): Fix a typo(s/BACKENDDIR/HOOKDIR/).
+
 	* misc/specs/lcopy.spec.in (BuildRequires): Added
 	cvs subversion git mercurial darcs bzr debwatch vanillax and spawn.
 

@@ -1,6 +1,8 @@
 - existence checking
 - ping
 - plugin rerunning
+- timeout
+
 
 cman
 procps-

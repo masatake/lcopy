@@ -1,3 +1,8 @@
+2012-07-09  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in (BuildRequires): Added
+	cvs subversion git mercurial darcs bzr debwatch vanillax and spawn.
+
 2012-06-26  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/systemd,trunk.lcopy (GIT_REPOSITORY): Updated.

@@ -1,5 +1,5 @@
 confs = \
-       \
+        \
 	ConsoleKit,trunk.lcopy \
 	Kahua,trunk.lcopy \
 	NetworkManager,trunk.lcopy \
@@ -31,6 +31,7 @@ confs = \
 	e2fsprogs,trunk.lcopy \
 	eclipse-sequoyah,trunk.lcopy \
 	emacs,trunk.lcopy \
+	emacs-graphviz-dot-mode,trunk.lcopy \
 	emacs-mew,trunk.lcopy \
 	emacs-w3m,trunk.lcopy \
 	ethtool,trunk.lcopy \

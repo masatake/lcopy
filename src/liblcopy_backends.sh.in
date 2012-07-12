@@ -1,7 +1,7 @@
 # expects: 
 # BACKEND=
 # VERSION=
-
+export LANG=C
 
 COMMON_SUBCMDS="checkout dirp genconf genconf_format print_cmdline rebirth update"
 

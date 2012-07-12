@@ -1,5 +1,9 @@
 2012-07-12  Masatake YAMATO  <yamato@redhat.com>
 
+	* configure.ac: version 0.3.5
+
+	* src/backends/hg (hg_update): Added -u.
+
 	* src/liblcopy_backends.sh.in: Set LANG C.
 
 2012-07-11  Masatake YAMATO  <yamato@redhat.com>
@@ -8,7 +12,7 @@
 
 2012-07-09  Masatake YAMATO  <yamato@redhat.com>
 
-	* configure.ac: version 0.3.3.
+	* configure.ac: version 0.3.4.
 
 	* src/liblcopy.sh.in (LCOPY_HOOKDIR): Fix a typo(s/BACKENDDIR/HOOKDIR/).
 

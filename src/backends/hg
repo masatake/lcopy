@@ -180,7 +180,7 @@ function hg_update
 
     cd "${update_dir}"
 
-    if common_spawn hg pull | tee $log; then
+    if common_spawn hg pull -u| tee $log; then
 	if [ "$(wc -l < $log)" -gt 1 ] && \
 	   LANG=C grep  '^no changes found$' $log > /dev/null 2>&1; then
 	    rm -f $log

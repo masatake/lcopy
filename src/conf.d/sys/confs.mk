@@ -87,6 +87,7 @@ confs = \
 	make,trunk.lcopy \
 	man-pages,trunk.lcopy \
 	mdadm,trunk.lcopy \
+	mew-ical,trunk.lcopy \
 	miniascape,trunk.lcopy \
 	mock,trunk.lcopy \
 	monotone,trunk.lcopy \

@@ -20,6 +20,7 @@ confs = \
 	cluster,trunk.lcopy \
 	coreutils,trunk.lcopy \
 	corosync,trunk.lcopy \
+	createrepo,trunk.lcopy \
 	ctags,trunk.lcopy \
 	cups,trunk.lcopy \
 	cygwin,trunk.lcopy \

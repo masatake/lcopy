@@ -1,6 +1,10 @@
+2012-10-29  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/ipmitool,trunk.lcopy: New file.
+
 2012-07-18  Masatake YAMATO  <yamato@redhat.com>
 
-	* src/conf.d/sys/mew-ical,trunk.lcopy: New  file.
+	* src/conf.d/sys/mew-ical,trunk.lcopy: New file.
 
 2012-07-12  Masatake YAMATO  <yamato@redhat.com>
 

@@ -64,9 +64,11 @@ confs = \
 	httpd,trunk.lcopy \
 	ietf-draft,trunk.lcopy \
 	initscripts,trunk.lcopy \
+	ipmitool,trunk.lcopy \
 	iproute,trunk.lcopy \
 	keepalived,trunk.lcopy \
 	kernel,dlm.lcopy \
+	kernel,dm.lcopy \
 	kernel,kbuild.lcopy \
 	kernel,kvm.lcopy \
 	kernel,net-next.lcopy \
@@ -77,6 +79,7 @@ confs = \
 	lcopy,trunk.lcopy \
 	libbonobo,trunk.lcopy \
 	libdwarves,trunk.lcopy \
+	libguestfs,trunk.lcopy \
 	liboil,trunk.lcopy \
 	libpcap,trunk.lcopy \
 	libtool,trunk.lcopy \

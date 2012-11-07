@@ -18,6 +18,7 @@ confs = \
 	cloudstack,trunk.lcopy \
 	cluster,stable31.lcopy \
 	cluster,trunk.lcopy \
+	coreipm,trunk.lcopy \
 	coreutils,trunk.lcopy \
 	corosync,trunk.lcopy \
 	createrepo,trunk.lcopy \

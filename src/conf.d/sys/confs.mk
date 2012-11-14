@@ -107,6 +107,7 @@ confs = \
 	openssl,trunk.lcopy \
 	ovirt-engine,trunk.lcopy \
 	pam,trunk.lcopy \
+	parted,trunk.lcopy \
 	perg,trunk.lcopy \
 	php,trunk.lcopy \
 	portage,trunk.lcopy \

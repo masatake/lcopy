@@ -1,3 +1,7 @@
+2012-11-14  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/parted,trunk.lcopy: New file.
+
 2012-11-08  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/coreipm,trunk.lcopy: New file.

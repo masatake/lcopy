@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 GIT_CF_VERSION="0.0.1"
-GIT_REPOSITORY="git://corosync.org/corosync.git"
+GIT_REPOSITORY="ggit://github.com/corosync/corosync.git"
 GIT_BRANCH=""
 LCOPY_CF_VERSION="0.2.19"
 LCOPY_VCS="git"

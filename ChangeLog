@@ -1,3 +1,7 @@
+2013-02-04  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/python-docutils,trunk.lcopy: New file.
+
 2012-11-15  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/corosync,trunk.lcopy (GIT_REPOSITORY): Updated.

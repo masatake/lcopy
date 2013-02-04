@@ -113,6 +113,7 @@ confs = \
 	portage,trunk.lcopy \
 	postgresql,trunk.lcopy \
 	prelcopy,trunk.lcopy \
+	python-docutils,trunk.lcopy \
 	python-virtinst,trunk.lcopy \
 	qemu,kvm.lcopy \
 	qemu,trunk.lcopy \

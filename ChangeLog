@@ -1,3 +1,7 @@
+2013-02-25  Masatake YAMATO  <yamato@redhat.com>	
+
+	* src/conf.d/sys/python-virtinst,trunk.lcopy: Updated.
+
 2013-02-04  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/python-docutils,trunk.lcopy: New file.

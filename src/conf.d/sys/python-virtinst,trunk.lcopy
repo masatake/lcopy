@@ -1,8 +1,9 @@
 # -*- shell-script -*-
-HG_CF_VERSION="0.0.0"
-HG_REPOSITORY="http://hg.fedorahosted.org/hg/python-virtinst"
-LCOPY_CF_VERSION="0.2.6"
-LCOPY_VCS="hg"
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="git://git.fedorahosted.org/git/python-virtinst.git"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.3.3"
+LCOPY_VCS="git"
 LCOPY_PACKAGE="python-virtinst"
 LCOPY_BRANCH="trunk"
 LCOPY_UPDATE="yes"

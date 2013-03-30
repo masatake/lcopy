@@ -1,3 +1,8 @@
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in (%install): Added installdirs
+	target to %makeinstall to prepare an empty dir.
+
 2013-02-04  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/python-docutils,trunk.lcopy: New file.

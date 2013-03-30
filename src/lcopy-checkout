@@ -66,6 +66,16 @@ function parse_arguments
 		INPUT=$1
 		shift
 
+		if ( ! [ -e "$INPUT" ] ); then
+		    if ! [[ "$INPUT" == *.lcopy ]]; then
+			INPUT="${INPUT}.lcopy"
+		    fi
+		    if ! [[ "$INPUT" == *,*.lcopy ]]; then
+			INPUT="$(basename $INPUT .lcopy),trunk.lcopy"
+		    fi
+		    INPUT=$(find "${LCOPY_CONFDIR}" -print0 | grep -FzZ "${INPUT}" | head -1)
+		fi
+
 		if ! [ -r "$INPUT" ]; then
 		    echo "cannot read: $INPUT" 1>&2
 		    exit $ERROR

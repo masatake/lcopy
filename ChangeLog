@@ -1,5 +1,11 @@
 2013-03-30  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/lcopy-checkout (parse_arguments): Added
+	more options to command line of find when searching
+	configuration files in /etc/lcopy/conf.d.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
 	* src/lcopy-checkout (parse_arguments, print_usage):
 	Added --list-confs option.
 

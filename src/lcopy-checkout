@@ -22,6 +22,7 @@ function print_usage
     echo "$0 --help|-h"
     echo "$0 [--output-dir=OUTPUT-DIR] [--no-error-message-if-existing] [--cradle-name=NAME] [--sync-with-conf] FILE.lcopy"
     echo "$0 --just-print-cmdline [FILE.lcopy]"
+    echo "$0 --list-confs"
     echo ""
     echo "(taking checkout configurations from stdin)"
     echo "Exit status: "
@@ -49,6 +50,10 @@ function parse_arguments
             --just-print-cmdline)
 		JUST_PRINT_CMDLINE=yes
 		NO_ERROR_MESSAGE_IF_EXISTING=yes
+		;;
+	    --list-confs)
+		find "${LCOPY_CONFDIR}" -type f -name '*.lcopy' | sed -e s"|${LCOPY_CONFDIR}/||"
+		exit $?
 		;;
 	    --sync-with-conf)
 		SYNC_WITH_CONF=yes

@@ -1,5 +1,10 @@
 2013-03-30  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/lcopy-checkout (parse_arguments, print_usage):
+	Added --list-confs option.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
 	* src/lcopy-checkout (parse_arguments): Search and prepare
 	configuration file from /etc/lcopy/conf.d if user gives a
 	name of non-existing file.

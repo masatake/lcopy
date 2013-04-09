@@ -1,5 +1,9 @@
 2013-04-09  Masatake YAMATO  <yamato@redhat.com>
 
+	* configure.ac: version 0.3.6.
+
+2013-04-09  Masatake YAMATO  <yamato@redhat.com>
+
 	* src/lcopy-checkout (parse_arguments): Handle unknown
 	short option.
 

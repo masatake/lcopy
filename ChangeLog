@@ -1,3 +1,8 @@
+2013-04-09  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (parse_arguments): Handle unknown
+	short option.
+
 2013-03-30  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-checkout (parse_arguments): Added

@@ -62,7 +62,7 @@ function parse_arguments
 	    (--cradle-name=*)
 	        SRPMIX_CRADLE_NAME=${1/--cradle-name=}
 	        ;;
-	    --*)
+	    -*)
 		echo "unknown option: $1" 1>&2
 		print_usage 1>&2
 		exit $ERROR

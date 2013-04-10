@@ -124,6 +124,7 @@ confs = \
 	rgmanager,trunk.lcopy \
 	rpm,rpm5.lcopy \
 	rpm,trunk.lcopy \
+	rst2pdf,trunk.lcopy \
 	rsyslog,trunk.lcopy \
 	samba,trunk.lcopy \
 	sblim-cmpi-base,trunk.lcopy \

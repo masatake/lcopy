@@ -2,6 +2,8 @@
 
 	* src/conf.d/sys/python-pygments.lcopy: New file.
 
+	* src/conf.d/sys/rst2pdf.lcopy: New file.
+
 2013-04-09  Masatake YAMATO  <yamato@redhat.com>
 
 	* configure.ac: version 0.3.6.

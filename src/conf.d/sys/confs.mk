@@ -114,6 +114,7 @@ confs = \
 	postgresql,trunk.lcopy \
 	prelcopy,trunk.lcopy \
 	python-docutils,trunk.lcopy \
+	python-pygments,trunk.lcopy \
 	python-virtinst,trunk.lcopy \
 	qemu,kvm.lcopy \
 	qemu,trunk.lcopy \

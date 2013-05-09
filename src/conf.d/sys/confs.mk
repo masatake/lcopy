@@ -95,6 +95,7 @@ confs = \
 	mew-ical,trunk.lcopy \
 	miniascape,trunk.lcopy \
 	mock,trunk.lcopy \
+	mod_jk,trunk.lcopy \
 	monotone,trunk.lcopy \
 	mscgen,trunk.lcopy \
 	net-snmp,trunk.lcopy \

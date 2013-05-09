@@ -115,6 +115,7 @@ confs = \
 	postgresql,trunk.lcopy \
 	prelcopy,trunk.lcopy \
 	python-docutils,trunk.lcopy \
+	python-pygments,trunk.lcopy \
 	python-virtinst,trunk.lcopy \
 	qemu,kvm.lcopy \
 	qemu,trunk.lcopy \
@@ -124,6 +125,7 @@ confs = \
 	rgmanager,trunk.lcopy \
 	rpm,rpm5.lcopy \
 	rpm,trunk.lcopy \
+	rst2pdf,trunk.lcopy \
 	rsyslog,trunk.lcopy \
 	samba,trunk.lcopy \
 	sblim-cmpi-base,trunk.lcopy \

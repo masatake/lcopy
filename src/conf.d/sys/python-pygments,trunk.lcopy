@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="http://bitbucket.org/birkenfeld/pygments-main"
+LCOPY_CF_VERSION="0.3.5.4"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="python-pygments"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

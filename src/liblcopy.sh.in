@@ -27,10 +27,13 @@ LCOPY_VERSION=@VERSION@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libexecdir=@libexecdir@
+sysconfdir=@sysconfdir@
 
 LCOPY_LIBEXECDIR=${LCOPY_LIBEXECDIR:-"${libexecdir}/lcopy"}
 LCOPY_BACKENDDIR=${LCOPY_BACKENDDIR:-"${LCOPY_LIBEXECDIR}/backends"}
 LCOPY_HOOKDIR=${LCOPY_HOOKDIR:-"${LCOPY_LIBEXECDIR}/hook.d"}
+
+LCOPY_CONFDIR=${LCOPY_CONFDIR:-"${sysconfdir}/lcopy/conf.d"}
 
 function lcopy_backends_list
 {

@@ -1,7 +1,7 @@
 m4_define([pkg_name],    [lcopy])
 m4_define([pkg_major_version],[0])
 m4_define([pkg_minor_version],[3])
-m4_define([pkg_micro_version],[5])
+m4_define([pkg_micro_version],[6])
 m4_define([pkg_version],pkg_major_version.pkg_minor_version.pkg_micro_version)
 
 AC_INIT(pkg_name, pkg_version)

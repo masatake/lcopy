@@ -2,6 +2,49 @@
 
 	* src/conf.d/sys/mod_jk,trunk.lcopy: New file.
 
+2013-04-17 	 Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/gauche,trunk.lcopy: Updated.
+
+2013-04-10  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/python-pygments.lcopy: New file.
+
+	* src/conf.d/sys/rst2pdf.lcopy: New file.
+
+2013-04-09  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: version 0.3.6.
+
+2013-04-09  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (parse_arguments): Handle unknown
+	short option.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (parse_arguments): Added
+	more options to command line of find when searching
+	configuration files in /etc/lcopy/conf.d.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (parse_arguments, print_usage):
+	Added --list-confs option.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/lcopy-checkout (parse_arguments): Search and prepare
+	configuration file from /etc/lcopy/conf.d if user gives a
+	name of non-existing file.
+
+	* src/liblcopy.sh.in (LCOPY_CONFDIR): New variable.
+
+2013-03-30  Masatake YAMATO  <yamato@redhat.com>
+
+	* misc/specs/lcopy.spec.in (%install): Added installdirs
+	target to %makeinstall to prepare an empty dir.
+
 2013-02-25  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/python-virtinst,trunk.lcopy: Updated.

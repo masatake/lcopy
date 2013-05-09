@@ -22,6 +22,7 @@ function print_usage
     echo "$0 --help|-h"
     echo "$0 [--output-dir=OUTPUT-DIR] [--no-error-message-if-existing] [--cradle-name=NAME] [--sync-with-conf] FILE.lcopy"
     echo "$0 --just-print-cmdline [FILE.lcopy]"
+    echo "$0 --list-confs"
     echo ""
     echo "(taking checkout configurations from stdin)"
     echo "Exit status: "
@@ -50,6 +51,10 @@ function parse_arguments
 		JUST_PRINT_CMDLINE=yes
 		NO_ERROR_MESSAGE_IF_EXISTING=yes
 		;;
+	    --list-confs)
+		find "${LCOPY_CONFDIR}" -type f -name '*.lcopy' | sed -e s"|${LCOPY_CONFDIR}/||"
+		exit $?
+		;;
 	    --sync-with-conf)
 		SYNC_WITH_CONF=yes
 		NO_ERROR_MESSAGE_IF_EXISTING=yes
@@ -57,7 +62,7 @@ function parse_arguments
 	    (--cradle-name=*)
 	        SRPMIX_CRADLE_NAME=${1/--cradle-name=}
 	        ;;
-	    --*)
+	    -*)
 		echo "unknown option: $1" 1>&2
 		print_usage 1>&2
 		exit $ERROR
@@ -65,6 +70,16 @@ function parse_arguments
 	    *)
 		INPUT=$1
 		shift
+
+		if ( ! [ -e "$INPUT" ] ); then
+		    if ! [[ "$INPUT" == *.lcopy ]]; then
+			INPUT="${INPUT}.lcopy"
+		    fi
+		    if ! [[ "$INPUT" == *,*.lcopy ]]; then
+			INPUT="$(basename $INPUT .lcopy),trunk.lcopy"
+		    fi
+		    INPUT=$(find "${LCOPY_CONFDIR}" -type f -name '*.lcopy' -print0 | grep -FzZ "${INPUT}" | head -1)
+		fi
 
 		if ! [ -r "$INPUT" ]; then
 		    echo "cannot read: $INPUT" 1>&2

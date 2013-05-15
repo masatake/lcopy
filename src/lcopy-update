@@ -139,6 +139,8 @@ function update
     lcopy_backend_update ${LCOPY_VCS} ${lcopy_file} ${update_dir}/*
     status=$?
     echo $status > ${base_dir}/STATUS
+
+    # TODO: This should be done in plugin
     echo ${SRPMIX_CRADLE_NAME:=unknown} > "${base_dir}/CRADLE"
     lcopy_prepare_archives "${base_dir}" "$LCOPY_ARCHIVE_POINTER"
 

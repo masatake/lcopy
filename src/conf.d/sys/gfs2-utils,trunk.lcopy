@@ -1,7 +1,10 @@
 # -*- shell-script -*-
-GIT_CF_VERSION="0.0.0"
+GIT_CF_VERSION="0.0.1"
 GIT_REPOSITORY="git://git.fedorahosted.org/gfs2-utils.git"
-LCOPY_CF_VERSION="0.2.5"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.3.5.4"
 LCOPY_VCS="git"
 LCOPY_PACKAGE="gfs2-utils"
 LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

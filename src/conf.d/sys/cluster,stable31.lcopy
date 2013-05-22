@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 GIT_CF_VERSION="0.0.1"
-GIT_REPOSITORY="http://git.fedorahosted.org/git/cluster.git"
+GIT_REPOSITORY="git://git.fedorahosted.org/cluster.git"
 GIT_BRANCH="STABLE31"
 LCOPY_CF_VERSION="0.2.18"
 LCOPY_VCS="git"

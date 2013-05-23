@@ -150,6 +150,7 @@ confs = \
 	srpmix,trunk.lcopy \
 	stitch,trunk.lcopy \
 	strace,trunk.lcopy \
+	strace-plus,trunk.lcopy \
 	sysstat,trunk.lcopy \
 	systemd,trunk.lcopy \
 	systemtap,trunk.lcopy \

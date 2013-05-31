@@ -1,5 +1,9 @@
 2013-05-31  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/conf.d/sys/glibc,ports.lcopy (GIT_REPOSITORY): updated.
+
+	* src/conf.d/sys/glibc,trunk.lcopy (GIT_REPOSITORY): updated.
+
 	* src/conf.d/sys/cloudstack,trunk.lcopy: updated.
 
 2013-05-23  Masatake YAMATO  <yamato@redhat.com>

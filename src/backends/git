@@ -206,7 +206,7 @@ function git_update
 
     cd "${update_dir}"
 
-    if common_spawn git pull | tee $log; then
+    if common_spawn git pull --rebase | tee $log; then
 	if [ "$(wc -l < $log)" = 1 ]  && \
 	   LANG=C grep  'Already up-to-date.' $log > /dev/null 2>&1; then
 	    rm -f $log
@@ -280,5 +280,3 @@ function main
 
 main "$@"
 exit $?
-
-# git clone git://github.com/masatake/cc-mode.git; cd cc-mode; git branch cc-guess; git checkout cc-guess; git fetch git://github.com/masatake/cc-mode.git cc-guess

@@ -1,6 +1,7 @@
 2013-05-31  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/backends/git (git_update): added --rebase to git pull.
+	Invoke git reset --hard before pull.
 
 2013-05-31  Masatake YAMATO  <yamato@redhat.com>
 

@@ -206,6 +206,8 @@ function git_update
 
     cd "${update_dir}"
 
+    git reset --hard
+
     if common_spawn git pull --rebase | tee $log; then
 	if [ "$(wc -l < $log)" = 1 ]  && \
 	   LANG=C grep  'Already up-to-date.' $log > /dev/null 2>&1; then

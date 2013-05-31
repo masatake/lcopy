@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 GIT_CF_VERSION="0.0.1"
-GIT_REPOSITORY="http://git.kernel.org/pub/scm/linux/kernel/git/mmarek/kbuild-2.6.git"
+GIT_REPOSITORY="git://git.kernel.org/pub/scm/linux/kernel/git/mmarek/kbuild.git"
 GIT_BRANCH="for-next"
 LCOPY_CF_VERSION="0.2.19"
 LCOPY_VCS="git"

@@ -24,13 +24,13 @@ function print_usage
     echo "$0 --just-print-cmdline [FILE.lcopy]"
     echo "$0 --list-confs"
     echo ""
-    echo "(taking checkout configurations from stdin)"
     echo "Exit status: "
     echo "	0: Successful"
     echo "	1: Error"
     echo "	2: Directory for checkout out to exists"
-    echo "environment variables:"
-    echo "SRPMIX_CRADLE_NAME=NAME"
+    echo ""
+    echo "Environment variables:"
+    echo "	SRPMIX_CRADLE_NAME=NAME"
 }
 
 function parse_arguments
@@ -52,7 +52,7 @@ function parse_arguments
 		NO_ERROR_MESSAGE_IF_EXISTING=yes
 		;;
 	    --list-confs)
-		find "${LCOPY_CONFDIR}" -type f -name '*.lcopy' | sed -e s"|${LCOPY_CONFDIR}/||"
+		find "${LCOPY_CONFDIR}" -type f -name '*.lcopy' | sed -e s"|${LCOPY_CONFDIR}/||" -e s"/\.lcopy$//" | sort
 		exit $?
 		;;
 	    --sync-with-conf)

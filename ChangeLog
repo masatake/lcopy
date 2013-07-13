@@ -1,5 +1,11 @@
 2013-07-13  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/lcopy-checkout (print_usage): Update help message.
+	(parse_arguments): Truncate .lcopy suffix from --list-confs
+	output. Sort the output.
+
+2013-07-13  Masatake YAMATO  <yamato@redhat.com>
+
 	* configure.ac: version 0.3.7.
 
 	* src/lcopy-genconf: Describe the case when BRANCH is not specified.

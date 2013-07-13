@@ -39,7 +39,7 @@ function lcopy_backends_list
 {
     local backend
     [ -d "${LCOPY_BACKENDDIR}" ] && \
-	find "${LCOPY_BACKENDDIR}" -perm +0100 -xtype f \
+	find "${LCOPY_BACKENDDIR}" -perm /0100 -xtype f \
 	| sort \
 	| grep -v '~$' \
 	| while read backend; do basename "$backend"; done
@@ -161,7 +161,7 @@ function lcopy_run_hook
     local base_dir=$2
     
     if [ -d "${LCOPY_HOOKDIR}" ]; then
-	find "${LCOPY_HOOKDIR}" -perm +0100 -xtype f \
+	find "${LCOPY_HOOKDIR}" -perm /0100 -xtype f \
 	    | sort -n      \
 	    | grep -v '~$' \
 	    | while read hook; do 

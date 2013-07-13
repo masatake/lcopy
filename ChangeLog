@@ -1,6 +1,8 @@
 2013-07-13  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-genconf: Describe the case when BRANCH is not specified.
+	Allow to use "--output-dir DIR" and "--generated-by FOO" instead of
+	"--output-dir=DIR" and "--generated-by=FOO".
 
 	* src/liblcopy.sh.in (lcopy_run_hook): User / instead of +
 	in -perm optarg for find command. + is deprecated.

@@ -41,8 +41,15 @@ function main
 		print_usage
 		exit 0
 		;;
+	    (--output-dir)
+		shift
+		output_dir=$1
+		# fall through
+		;&
 	    (--output-dir=*)
-                output_dir=${1/--output-dir=}
+	        if [[ -z "${output_dir}" ]]; then
+                    output_dir=${1/--output-dir=}
+		fi
 		if ! [ -d "$output_dir" ]; then
 		    echo "no such directory: $output_dir" 1>&2
 		    print_usage 1>&2
@@ -51,6 +58,10 @@ function main
                 ;;
 	    (--no-update)
 	    	update=no
+		;;
+	    (--generated-by)
+		shift
+		generated_by=$1
 		;;
 	    (--generated-by=*)
 	    	generated_by=${1/--generated-by=}

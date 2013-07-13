@@ -84,6 +84,7 @@ confs = \
 	liboil,trunk.lcopy \
 	libpcap,trunk.lcopy \
 	libtool,trunk.lcopy \
+	libunwind,trunk.lcopy \
 	libvirt,trunk.lcopy \
 	lm-sensors,trunk.lcopy \
 	ltp,trunk.lcopy \

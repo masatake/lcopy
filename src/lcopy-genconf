@@ -7,9 +7,12 @@ function print_usage
 {
     echo "Usage: "
     echo "$0 --help|-h"
-    echo "$0 [--output-dir=OUTPUT-DIR] [--no-update] [--generated-by=GENERATED-BY] PACKAGE,BRANCH VCS-COMMANDS..."
+    echo "$0 [--output-dir=OUTPUT-DIR] [--no-update] [--generated-by=GENERATED-BY] PACKAGE[,BRANCH] VCS-COMMANDS..."
     echo ""
 
+    echo "	If no BRANCH is given, \"trunk\" is used."
+    
+    echo ""
     echo "VCS-COMMANDS format:"
     for v in $(lcopy_backends_list); do
 	echo "[ $v backend ] "

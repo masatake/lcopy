@@ -1,5 +1,7 @@
 2013-07-13  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/lcopy-genconf: Describe the case when BRANCH is not specified.
+
 	* src/liblcopy.sh.in (lcopy_run_hook): User / instead of +
 	in -perm optarg for find command. + is deprecated.
 	(lcopy_backends_list): Ditto.

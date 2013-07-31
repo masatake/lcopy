@@ -102,6 +102,7 @@ confs = \
 	net-snmp,trunk.lcopy \
 	netbsd-kernel,trunk.lcopy \
 	nfs-utils,trunk.lcopy \
+	notion,trunk.lcopy \
 	openais,trunk.lcopy \
 	openid4java,trunk.lcopy \
 	openldap,trunk.lcopy \
@@ -167,6 +168,7 @@ confs = \
 	virt-manager,trunk.lcopy \
 	virt-v2v,trunk.lcopy \
 	wfo,trunk.lcopy \
+	wireshark,libvirt.lcopy \
 	wireshark,trunk.lcopy \
 	with-log,trunk.lcopy \
 	xorg-x11-drv-mga,trunk.lcopy \

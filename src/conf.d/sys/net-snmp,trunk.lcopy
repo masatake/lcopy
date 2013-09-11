@@ -1,8 +1,9 @@
 # -*- shell-script -*-
-SVN_CF_VERSION="0.0.0"
-SVN_REPOSITORY="http://net-snmp.svn.sourceforge.net/svnroot/net-snmp/trunk/net-snmp"
-LCOPY_CF_VERSION="0.2.8"
-LCOPY_VCS="svn"
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="git://git.code.sf.net/p/net-snmp/code"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.3.7"
+LCOPY_VCS="git"
 LCOPY_PACKAGE="net-snmp"
 LCOPY_BRANCH="trunk"
 LCOPY_UPDATE="yes"

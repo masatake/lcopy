@@ -1,3 +1,12 @@
+2013-09-11  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/cc-mode,trunk.lcopy:
+	* src/conf.d/sys/ctags,trunk.lcopy
+	* src/conf.d/sys/net-snmp,trunk.lcopy
+	* src/conf.d/sys/pam,trunk.lcopy
+	* src/conf.d/sys/strace,trunk.lcopy
+	Updated.
+
 2013-07-13  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/lcopy-checkout (print_usage): Update help message.

@@ -12,7 +12,7 @@ function print_usage
     echo "Usage: "
     echo "$0 --help|-h"
     echo "$0 --root-dir=ROOT-DIR"
-    echo "$0 BASE-DIR"
+    echo "$0 [BASE-DIR]"
     echo "$0 --no-update-p BASE-DIR"
     echo ""
     echo "--no-update-p checks the value for LCOPY_UPDATE in conf file: "
@@ -72,9 +72,7 @@ function parse_arguments
     fi
 
     if [ -z "$ROOT_DIR" ] && [ -z "$BASE_DIR" ]; then
-	echo "specify either ROOT-DIR or BASE-DIR" 1>&2
-	print_usage 1>&2
-	exit 1
+	BASE_DIR=.
     fi
 
     if [ -n "$ROOT_DIR" ] && [ -n "$BASE_DIR" ]; then

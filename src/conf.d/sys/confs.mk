@@ -32,6 +32,7 @@ confs = \
 	dovecot,2_1.lcopy \
 	e2fsprogs,trunk.lcopy \
 	eclipse-sequoyah,trunk.lcopy \
+	elfutils,trunk.lcopy \
 	emacs,trunk.lcopy \
 	emacs-graphviz-dot-mode,trunk.lcopy \
 	emacs-mew,trunk.lcopy \

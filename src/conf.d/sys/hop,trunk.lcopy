@@ -1,0 +1,9 @@
+# -*- shell-script -*-
+HG_CF_VERSION="0.0.0"
+HG_REPOSITORY="http://hop.inria.fr:4000"
+LCOPY_CF_VERSION="0.3.7"
+LCOPY_VCS="hg"
+LCOPY_PACKAGE="hop"
+LCOPY_BRANCH="trunk"
+LCOPY_UPDATE="yes"
+LCOPY_GENERATED_BY="manual"

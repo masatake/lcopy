@@ -62,6 +62,7 @@ confs = \
 	hachoir,trunk.lcopy \
 	hal,trunk.lcopy \
 	hieroglyph,trunk.lcopy \
+	hop,trunk.lcopy \
 	httpclient,trunk.lcopy \
 	httpd,trunk.lcopy \
 	ietf-draft,trunk.lcopy \

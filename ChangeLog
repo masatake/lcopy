@@ -1,3 +1,7 @@
+2013-09-22  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/hop,trunk.lcopy: New file.
+
 2013-09-19  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/elfutils,trunk.lcopy: New file.

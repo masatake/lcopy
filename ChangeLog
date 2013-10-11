@@ -1,3 +1,19 @@
+2013-10-11  Masatake YAMATO  <yamato@redhat.com>
+
+	* configure.ac: Check existence of timeout command.
+
+	* src/liblcopy_backends.sh.in (lcopy_wait_timed): Removed.
+	use timeout command in coreutils.
+
+	* src/lcopy-update (LCOPY_UPDATE_TIMEOUT): Introduce new
+	parameter in conf.
+
+	* src/lcopy-update (update): Set default 600 sec as timeout.
+
+	* src/liblcopy.sh.in (lcopy_backend_call_with_timeout):
+	New function.
+	(lcopy_backend_update): Use lcopy_backend_call_with_timeout.
+
 2013-09-22  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/hop,trunk.lcopy: New file.

@@ -61,6 +61,11 @@ if test x$_SPAWN_ = x; then
   AC_MSG_ERROR([Cannot find spawn])
 fi			
 
+AC_PATH_PROG([_TIMEOUT_], [timeout])
+if test x$_TIMEOUT_ = x; then
+  AC_MSG_ERROR([Cannot find timeout])
+fi			
+
 
 AC_RPM_RELEASE
 

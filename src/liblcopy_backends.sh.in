@@ -43,32 +43,6 @@ function common_write_spec
     printf "${BACKEND^^*}_CF_VERSION=\"%s\"\n" "${VERSION}"
 }
 
-
-
-function lcopy_wait_timed
-{
-    KILL_STATUS=142
-    local pid
-    local timeout=$1
-    shift
-    
-
-    "$@" &
-    pid=$!
-
-    while kill -s CONT $pid > /dev/null 2>&1; do
-	timeout=$(( timeout - 1 ))
-	if (( timeout >= 0 )); then
-	    sleep 1
-	else
-	    kill $pid > /dev/null 2>&1
-	    return $KILL_STATUS
-	fi
-    done
-    wait $pid
-    return $?
-}
-
 function common_spawn
 {
     "$@"

@@ -54,6 +54,20 @@ function lcopy_backends_help
     done
 }
 
+function lcopy_backend_call_with_timeout
+{
+    local duration=$1
+    shift
+
+    local vcs=$1
+    shift
+
+    local subcmd=$1
+    shift
+
+    timeout ${duration} ${LCOPY_BACKENDDIR}/$vcs $subcmd "$@"
+}
+
 function lcopy_backend_call
 {
     local vcs=$1
@@ -117,9 +131,12 @@ function lcopy_backend_print_cmdline
 
 function lcopy_backend_update
 {
+    local duration=$1
+    shift
+
     local vcs=$1
     shift
-    lcopy_backend_call $vcs update "$@"
+    lcopy_backend_call_with_timeout $duration $vcs update "$@"
 }
 
 function lcopy_backend_rebirth

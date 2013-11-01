@@ -1,3 +1,7 @@
+2013-11-01  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/busybox,trunk.lcopy: New file.
+
 2013-10-11  Masatake YAMATO  <yamato@redhat.com>
 
 	* configure.ac: Check existence of timeout command.

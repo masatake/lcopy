@@ -13,6 +13,7 @@ confs = \
 	bind,released.lcopy \
 	binutils,trunk.lcopy \
 	biwascheme,trunk.lcopy \
+	busybox,trunk.lcopy \
 	cairo,trunk.lcopy \
 	cc-mode,trunk.lcopy \
 	cloudstack,trunk.lcopy \

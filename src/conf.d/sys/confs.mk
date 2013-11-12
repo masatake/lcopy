@@ -70,6 +70,7 @@ confs = \
 	initscripts,trunk.lcopy \
 	ipmitool,trunk.lcopy \
 	iproute,trunk.lcopy \
+	iptables,trunk.lcopy \
 	keepalived,trunk.lcopy \
 	kernel,dlm.lcopy \
 	kernel,dm.lcopy \
@@ -105,6 +106,7 @@ confs = \
 	net-snmp,trunk.lcopy \
 	netbsd-kernel,trunk.lcopy \
 	nfs-utils,trunk.lcopy \
+	nmap,trunk.lcopy \
 	notion,trunk.lcopy \
 	openais,trunk.lcopy \
 	openid4java,trunk.lcopy \
@@ -119,6 +121,7 @@ confs = \
 	portage,trunk.lcopy \
 	postgresql,trunk.lcopy \
 	prelcopy,trunk.lcopy \
+	procps-ng,trunk.lcopy \
 	python-docutils,trunk.lcopy \
 	python-pygments,trunk.lcopy \
 	python-virtinst,trunk.lcopy \

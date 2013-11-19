@@ -31,6 +31,7 @@ confs = \
 	dhcp,trunk.lcopy \
 	dlm,trunk.lcopy \
 	dovecot,2_1.lcopy \
+	dstat,trunk.lcopy \
 	e2fsprogs,trunk.lcopy \
 	eclipse-sequoyah,trunk.lcopy \
 	elfutils,trunk.lcopy \
@@ -71,6 +72,7 @@ confs = \
 	ipmitool,trunk.lcopy \
 	iproute,trunk.lcopy \
 	iptables,trunk.lcopy \
+	kSar,trunk.lcopy \
 	keepalived,trunk.lcopy \
 	kernel,dlm.lcopy \
 	kernel,dm.lcopy \

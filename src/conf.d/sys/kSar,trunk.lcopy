@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 SVN_CF_VERSION="0.0.0"
-SVN_REPOSITORY="svn://svn.code.sf.net/p/ksar/code/trunk"
+SVN_REPOSITORY="svn://svn.code.sf.net/p/ksar/code/trunk/kSar"
 LCOPY_CF_VERSION="0.3.7"
 LCOPY_VCS="svn"
 LCOPY_PACKAGE="kSar"

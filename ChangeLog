@@ -1,3 +1,7 @@
+2013-12-05  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/uim,turnk.lcopy: Updated.
+
 2013-11-19  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/dstat,trunk.lcopy: New file.

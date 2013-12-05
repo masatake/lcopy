@@ -1,8 +1,9 @@
 # -*- shell-script -*-
-SVN_CF_VERSION="0.0.0"
-SVN_REPOSITORY="http://uim.googlecode.com/svn/trunk"
-LCOPY_CF_VERSION="0.2.18"
-LCOPY_VCS="svn"
+GIT_CF_VERSION="0.0.1"
+GIT_REPOSITORY="https://github.com/uim/uim.git"
+GIT_BRANCH=""
+LCOPY_CF_VERSION="0.3.7"
+LCOPY_VCS="git"
 LCOPY_PACKAGE="uim"
 LCOPY_BRANCH="trunk"
 LCOPY_UPDATE="yes"

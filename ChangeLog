@@ -1,5 +1,9 @@
 2014-01-14  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/conf.d/sys/binutils,trunk.lcopy: Updated.
+
+2014-01-14  Masatake YAMATO  <yamato@redhat.com>
+
 	* src/conf.d/sys/undump,trunk.lcopy: New file.
 
 2013-12-30  Masatake YAMATO  <yamato@redhat.com>

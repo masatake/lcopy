@@ -42,6 +42,7 @@ confs = \
 	ethtool,trunk.lcopy \
 	fence,trunk.lcopy \
 	fence-agents,trunk.lcopy \
+	findutils,trunk.lcopy \
 	flashcache,trunk.lcopy \
 	gauche,trunk.lcopy \
 	gauche-mode,trunk.lcopy \
@@ -158,6 +159,7 @@ confs = \
 	spice,vdi_slirp.lcopy \
 	squid,trunk.lcopy \
 	srpmix,trunk.lcopy \
+	statifier,trunk.lcopy \
 	stitch,trunk.lcopy \
 	strace,trunk.lcopy \
 	strace-plus,trunk.lcopy \
@@ -169,6 +171,7 @@ confs = \
 	twig,trunk.lcopy \
 	udev,trunk.lcopy \
 	uim,trunk.lcopy \
+	undump,trunk.lcopy \
 	unetstack,trunk.lcopy \
 	util-linux,trunk.lcopy \
 	util-linux-ng,trunk.lcopy \

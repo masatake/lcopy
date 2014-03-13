@@ -1,3 +1,9 @@
+2014-03-13  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/findutils,trunk.lcopy: New file.
+
+	* src/conf.d/sys/statifier,trunk.lcopy: New file.
+
 2014-01-29  Masatake YAMATO  <yamato@redhat.com>
 
 	* configure.ac: version 0.3.8.

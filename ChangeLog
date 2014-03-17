@@ -1,3 +1,7 @@
+2014-03-17  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/dbus,trunk.lcopy: New file.
+
 2014-03-13  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/findutils,trunk.lcopy: New file.

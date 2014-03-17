@@ -26,6 +26,7 @@ confs = \
 	ctags,trunk.lcopy \
 	cups,trunk.lcopy \
 	cygwin,trunk.lcopy \
+	dbus,trunk.lcopy \
 	ddskk,trunk.lcopy \
 	device-mapper-multipath,trunk.lcopy \
 	dhcp,trunk.lcopy \

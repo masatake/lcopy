@@ -17,7 +17,7 @@ function repo_check
 {
     local repo=$1
 
-    if [ -z "${repo}" ]; then
+    if [[ -z "${repo}" ]]; then
 	echo "broken bzr command line: cannot find repository specification" 1>&2
 	return 1
     fi
@@ -37,7 +37,6 @@ function repo_check
 	for s in "$http_spec" "$https_spec" "$lp_spec"; do
 	    echo "	$s" 1>&2
 	done
-	return 1
 	return 1
     fi
 }

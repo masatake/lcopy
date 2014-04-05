@@ -1,3 +1,8 @@
+2014-04-06  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/bzr (repo_check): Remove duplicated line.
+	Use bash own condition notation.
+
 2014-03-17  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/dbus,trunk.lcopy: New file.

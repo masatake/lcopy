@@ -1,3 +1,9 @@
+2014-04-11  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/systemtap,trunk.lcopy (GIT_REPOSITORY): Updated.
+
+	* src/conf.d/sys/openstack-*.conf: New files.
+
 2014-04-06  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/backends/bzr (repo_check): Remove duplicated line.

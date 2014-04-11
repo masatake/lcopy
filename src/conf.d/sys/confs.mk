@@ -16,6 +16,7 @@ confs = \
 	busybox,trunk.lcopy \
 	cairo,trunk.lcopy \
 	cc-mode,trunk.lcopy \
+	cloud-init,trunk.lcopy \
 	cloudstack,trunk.lcopy \
 	cluster,stable31.lcopy \
 	cluster,trunk.lcopy \
@@ -117,6 +118,9 @@ confs = \
 	openldap,trunk.lcopy \
 	openssh,trunk.lcopy \
 	openssl,trunk.lcopy \
+	openstack-cinder,trunk.lcopy \
+	openstack-nova,trunk.lcopy \
+	openstack-swift,trunk.lcopy \
 	ovirt-engine,trunk.lcopy \
 	pam,trunk.lcopy \
 	parted,trunk.lcopy \

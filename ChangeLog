@@ -1,3 +1,7 @@
+2014-05-25  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/conf.d/sys/wireshark,lcopy: Updated.
+
 2014-04-11  Masatake YAMATO  <yamato@redhat.com>
 
 	* src/conf.d/sys/systemtap,trunk.lcopy (GIT_REPOSITORY): Updated.

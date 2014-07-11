@@ -44,6 +44,7 @@ confs = \
 	ethtool,trunk.lcopy \
 	fence,trunk.lcopy \
 	fence-agents,trunk.lcopy \
+	fence-virtd,trunk.lcopy \
 	findutils,trunk.lcopy \
 	flashcache,trunk.lcopy \
 	gauche,trunk.lcopy \
@@ -110,10 +111,12 @@ confs = \
 	mscgen,trunk.lcopy \
 	net-snmp,trunk.lcopy \
 	netbsd-kernel,trunk.lcopy \
+	netsniff-ng,trunk.lcopy \
 	nfs-utils,trunk.lcopy \
 	nmap,trunk.lcopy \
 	notion,trunk.lcopy \
 	openais,trunk.lcopy \
+	opengrok,trunk.lcopy \
 	openid4java,trunk.lcopy \
 	openldap,trunk.lcopy \
 	openssh,trunk.lcopy \

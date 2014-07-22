@@ -155,6 +155,7 @@ confs = \
 	scheme2js,released.lcopy \
 	scsi-target-utils,trunk.lcopy \
 	shadow-utils,trunk.lcopy \
+	sheepdog,trunk.lcopy \
 	sop,trunk.lcopy \
 	sos,trunk.lcopy \
 	source-highlight,trunk.lcopy \

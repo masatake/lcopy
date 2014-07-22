@@ -71,6 +71,7 @@ function parse_arguments
 		INPUT=$1
 		shift
 
+		local original_input=$INPUT
 		if ( ! [ -e "$INPUT" ] ); then
 		    if ! [[ "$INPUT" == *.lcopy ]]; then
 			INPUT="${INPUT}.lcopy"
@@ -82,7 +83,11 @@ function parse_arguments
 		fi
 
 		if ! [ -r "$INPUT" ]; then
-		    echo "cannot read: $INPUT" 1>&2
+		    if [[ -n "$INPUT" ]]; then
+			echo "cannot read: $INPUT" 
+		    else
+			echo "cannot find conf file for : ${original_input}" 
+		    fi 1>&2
 		    exit $ERROR
 		fi
 		break

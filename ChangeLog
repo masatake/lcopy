@@ -1,5 +1,15 @@
 2014-07-22  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/lcopy-checkout (parse_arguments): Improve
+	error message.
+
+2014-07-22  Masatake YAMATO  <yamato@redhat.com>
+
+	* src/backends/git (git_genconf): make an error message
+	more readable.
+
+2014-07-22  Masatake YAMATO  <yamato@redhat.com>
+
 	* src/conf.d/sys/sheepdog,trunk.lcopy: New file.
 
 2014-07-11  Masatake YAMATO  <yamato@redhat.com>

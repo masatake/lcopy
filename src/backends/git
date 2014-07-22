@@ -95,7 +95,7 @@ function git_genconf
     cmd=$1
     shift
     if ! [ "$cmd" = "clone" ] ; then
-	echo "unknown command for clone: $cmd" 1>&2
+	echo "unknown command: $cmd (clone is expected)" 1>&2
 	return 1
     fi
     

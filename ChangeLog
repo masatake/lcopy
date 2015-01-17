@@ -1,5 +1,7 @@
 2015-01-17  Masatake YAMATO  <yamato@redhat.com>
 
+	* src/conf.d/sys/lvm2,trunk.lcopy: updated.
+
 	* src/conf.d/sys/openssl,trunk.lcopy: updated.
 
 2014-07-22  Masatake YAMATO  <yamato@redhat.com>
